@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/narcisse-dalko-portfolio/static/css/main.91a9a7c0.css",
+    "main.js": "/narcisse-dalko-portfolio/static/js/main.b369f919.js",
+    "static/media/ProjetReconnaissance_faciale.png": "/narcisse-dalko-portfolio/static/media/ProjetReconnaissance_faciale.5cbbf1af5ab7f7e68ed8.png",
+    "static/media/mafoto.jpeg": "/narcisse-dalko-portfolio/static/media/mafoto.21b68198d8fc2c5913ec.jpeg",
+    "static/media/projetUsine.webp": "/narcisse-dalko-portfolio/static/media/projetUsine.90046ad6586adccf6b82.webp",
+    "static/media/contactImg.png": "/narcisse-dalko-portfolio/static/media/contactImg.c0c32b234ad260bf810c.png",
+    "static/media/projectNine.webp": "/narcisse-dalko-portfolio/static/media/projectNine.e51e9af28d32109b4543.webp",
+    "static/media/Narcisse_DALKO_cv.pdf": "/narcisse-dalko-portfolio/static/media/Narcisse_DALKO_cv.1e353542b56e440525d9.pdf",
+    "static/media/cv_en.pdf": "/narcisse-dalko-portfolio/static/media/cv_en.1e353542b56e440525d9.pdf",
+    "static/media/cv_fr.pdf": "/narcisse-dalko-portfolio/static/media/cv_fr.1e353542b56e440525d9.pdf",
+    "static/media/photoID.jpeg": "/narcisse-dalko-portfolio/static/media/photoID.c60a3e6cb6f58226bc4f.jpeg",
+    "static/media/testimonialOne.jpg": "/narcisse-dalko-portfolio/static/media/testimonialOne.a70003b7c3a357895d2c.jpg",
+    "static/media/ProjetArbreBinaire.jpeg": "/narcisse-dalko-portfolio/static/media/ProjetArbreBinaire.3dc1f6fc67dd855f8e8b.jpeg",
+    "index.html": "/narcisse-dalko-portfolio/index.html",
+    "main.91a9a7c0.css.map": "/narcisse-dalko-portfolio/static/css/main.91a9a7c0.css.map",
+    "main.b369f919.js.map": "/narcisse-dalko-portfolio/static/js/main.b369f919.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.91a9a7c0.css",
+    "static/js/main.b369f919.js"
+  ]
+}
