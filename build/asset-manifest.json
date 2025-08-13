@@ -1,8 +1,9 @@
 {
   "files": {
-    "main.css": "/narcisse-dalko-portfolio/static/css/main.91a9a7c0.css",
-    "main.js": "/narcisse-dalko-portfolio/static/js/main.92a1a47e.js",
+    "main.css": "/narcisse-dalko-portfolio/static/css/main.1d8c493d.css",
+    "main.js": "/narcisse-dalko-portfolio/static/js/main.96c81d0b.js",
     "static/media/ProjetReconnaissance_faciale.png": "/narcisse-dalko-portfolio/static/media/ProjetReconnaissance_faciale.5cbbf1af5ab7f7e68ed8.png",
+    "static/media/CitesPerdues.webp": "/narcisse-dalko-portfolio/static/media/CitesPerdues.530db869ccf419e43279.webp",
     "static/media/mafoto.jpeg": "/narcisse-dalko-portfolio/static/media/mafoto.21b68198d8fc2c5913ec.jpeg",
     "static/media/projetUsine.webp": "/narcisse-dalko-portfolio/static/media/projetUsine.90046ad6586adccf6b82.webp",
     "static/media/contactImg.png": "/narcisse-dalko-portfolio/static/media/contactImg.c0c32b234ad260bf810c.png",
@@ -14,11 +15,11 @@
     "static/media/testimonialOne.jpg": "/narcisse-dalko-portfolio/static/media/testimonialOne.a70003b7c3a357895d2c.jpg",
     "static/media/ProjetArbreBinaire.jpeg": "/narcisse-dalko-portfolio/static/media/ProjetArbreBinaire.3dc1f6fc67dd855f8e8b.jpeg",
     "index.html": "/narcisse-dalko-portfolio/index.html",
-    "main.91a9a7c0.css.map": "/narcisse-dalko-portfolio/static/css/main.91a9a7c0.css.map",
-    "main.92a1a47e.js.map": "/narcisse-dalko-portfolio/static/js/main.92a1a47e.js.map"
+    "main.1d8c493d.css.map": "/narcisse-dalko-portfolio/static/css/main.1d8c493d.css.map",
+    "main.96c81d0b.js.map": "/narcisse-dalko-portfolio/static/js/main.96c81d0b.js.map"
   },
   "entrypoints": [
-    "static/css/main.91a9a7c0.css",
-    "static/js/main.92a1a47e.js"
+    "static/css/main.1d8c493d.css",
+    "static/js/main.96c81d0b.js"
   ]
 }
