@@ -2,17 +2,32 @@ import React, { useState } from 'react'
 import { Link } from "react-scroll";
 import { FiMenu } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
-import {  FaLinkedinIn } from "react-icons/fa";
+import {  FaLinkedinIn, FaLanguage } from "react-icons/fa";
 import { SiGithub,SiGmail } from "react-icons/si";
 //import {logo} from "../../assets/index"
 import { navLinksdata } from '../../constants';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const Navbar = () => {
   const [showMenu, setShowMenu]=useState(false)
+  const { language, toggleLanguage, t } = useLanguage();
+  
   return (
     <div className="w-full h-24 sticky top-0 z-50 bg-bodyColor mx-auto flex justify-between items-center font-titleFont border-b-[1px] border-b-gray-600">
       <div>
        <p>Mon PortoFolio</p>
+      </div>
+      <div className="flex items-center gap-4">
+        <button
+          onClick={toggleLanguage}
+          className="text-xl bg-black w-10 h-10 inline-flex items-center justify-center rounded-full text-designColor cursor-pointer hover:bg-designColor hover:text-black transition-colors duration-300"
+          title={language === 'fr' ? 'Switch to English' : 'Passer en français'}
+        >
+          <FaLanguage />
+        </button>
+        <span className="text-sm text-gray-400 font-medium">
+          {language.toUpperCase()}
+        </span>
       </div>
       <div>
         <ul className="hidden mdl:inline-flex items-center gap-6 lg:gap-10">

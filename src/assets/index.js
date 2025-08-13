@@ -6,6 +6,7 @@ import projectTwo from "./images/projects/ProjetPrixImmobilier.png";
 import projectThree from "./images/projects/ProjetReconnaissance_faciale.png";
 import projectFour from "./images/projects/projetUsine.webp";
 import projectFive from "./images/projects/projectNine.webp";
+import projectSix from "./images/projects/CitesPerdues.webp";
 import testimonialOne from "./images/testmonial/testimonialOne.jpg";
 import testimonialTwo from "./images/testmonial/testimonialTwo.jpeg";
 import testimonialThree from "./images/testmonial/testimonialThree.jpeg";
@@ -22,6 +23,7 @@ export {
   projectThree,
   projectFour,
   projectFive,
+  projectSix,
   testimonialOne,
   testimonialTwo,
   testimonialThree,

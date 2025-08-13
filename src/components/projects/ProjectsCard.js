@@ -14,7 +14,7 @@ const ProjectsCard = ({ title, des, src, githubLink, websiteLink }) => {
           decoding="async"
         />
       </div>
-      <div className="w-full mt-5 flex flex-col  gap-6">
+      <div className="w-full mt-3 flex flex-col gap-3">
         <div>
           <div className="flex items-center justify-between">
             <h3 className="text-base uppercase text-designColor font-normal">
@@ -37,7 +37,7 @@ const ProjectsCard = ({ title, des, src, githubLink, websiteLink }) => {
               )}
             </div>
           </div>
-          <p style={{ whiteSpace: "pre-line" }} className="text-sm tracking-wide mt-3 hover:text-gray-100 duration-300">
+          <p style={{ whiteSpace: "pre-line" }} className="text-sm tracking-wide mt-2 hover:text-gray-100 duration-300">
             {des}
           </p>
       

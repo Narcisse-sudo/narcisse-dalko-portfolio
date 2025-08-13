@@ -2,14 +2,21 @@ import React from 'react'
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 /*import Media from './Media';*/
 import { photoID, cv_en, cv_fr} from "../../assets/index"; // <-- Assure-toi que l'image existe bien à ce chemin
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const LeftBanner = () => {
+  const { t, language } = useLanguage();
+  
   const [text] = useTypewriter({
-    words: ["Le data scientist qui allie rigueur d’ingénieur et curiosité de chercheur.", "Data Scientist.", "Votre futur collaborateur 😉 "],
-    loop: false,
-    typeSpeed: 20,
-    deleteSpeed: 10000000000, // Pour éviter la suppression du texte
-    delaySpeed: 2000,
+    words: [
+      t('typewriter.phrase1'),
+      t('typewriter.phrase2'),
+      t('typewriter.phrase3')
+    ],
+    loop: true, // Activer la boucle pour répéter les messages
+    typeSpeed: 50, // Vitesse de frappe plus lente pour une meilleure lisibilité
+    deleteSpeed: 30, // Vitesse de suppression normale
+    delaySpeed: 3000, // Délai entre chaque message
   });
 
   return (
@@ -26,7 +33,7 @@ const LeftBanner = () => {
       <div className="max-w-4xl flex flex-col gap-6">
         {/* Heading */}
         <h1 className="text-5xl md:text-6xl font-bold text-white">
-          Salut, Je suis <span className="text-blue-500 capitalize">Narcisse DALKO</span>
+          {t('greeting')} <span className="text-blue-500 capitalize">Narcisse DALKO</span>
         </h1>
 
         {/* Typewriter Text */}
@@ -41,20 +48,20 @@ const LeftBanner = () => {
 
         {/* About */}
         <div className="text-base font-bodyFont leading-7 tracking-wide text-white space-y-4 mt-4">
-          <p className="font-semibold text-lg text-gray-200">Qui suis je ?</p>
-          <p> Étudiant en master 2 de mathématiques pour l'ingénierie algorithmique et statistique, spécialisé en data scientist et en intelligence artificielle, avec de solide compétences en machine learning, mathématiques et statistiques. Jé suis à la recherche d'un contrat d'apprentissage en data scientist de 12 mois dès septembre 2025</p>
+          <p className="font-semibold text-lg text-gray-200">{t('about.title')}</p>
+          <p>{t('about.description')}</p>
          
         </div>
 
         {/* Buttons */}
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
           <a
-            href={cv_fr}
+            href={language === 'fr' ? cv_fr : cv_en}
             target="_blank"
             rel="noopener noreferrer"
             className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition"
           >
-            📄 Télécharger mon CV (FR)
+            {language === 'fr' ? t('buttons.cv_fr') : t('buttons.cv_en')}
           </a>
           <a
             href="https://github.com/Narcisse-sudo"
@@ -62,7 +69,7 @@ const LeftBanner = () => {
             rel="noopener noreferrer"
             className="px-6 py-3 border border-blue-600 hover:bg-blue-600 hover:text-white text-blue-500 font-semibold rounded-lg transition"
           >
-            💻 Mon GitHub
+            {t('buttons.github')}
           </a>
          {/* <a
             href={cv_en}
