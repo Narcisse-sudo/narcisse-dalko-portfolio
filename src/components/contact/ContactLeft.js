@@ -4,8 +4,8 @@ import { SiGithub, SiGmail } from 'react-icons/si';
 import { contactImg } from '../../assets/index';
 import cv from '../../assets/reports/Narcisse_DALKO_cv.pdf';
 import { useLanguage } from '../../contexts/LanguageContext';
-//import certificat_espagnol from '../../assets/reports/certificat_espagnol.pdf'
-//import TOEIC_Essomba_Chris from '../../assets/reports/TOEIC_Essomba_Chris.pdf' 
+// import certificat_espagnol from '../../assets/reports/certificat_espagnol.pdf'
+// import TOEIC_Essomba_Chris from '../../assets/reports/TOEIC_Essomba_Chris.pdf' 
 
 const ContactLeft = () => {
   const { t } = useLanguage();
