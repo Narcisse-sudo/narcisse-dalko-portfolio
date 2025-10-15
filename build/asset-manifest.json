@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/narcisse-dalko-portfolio/static/css/main.1d8c493d.css",
-    "main.js": "/narcisse-dalko-portfolio/static/js/main.523f77fe.js",
+    "main.js": "/narcisse-dalko-portfolio/static/js/main.1375c3e5.js",
     "static/media/ProjetReconnaissance_faciale.png": "/narcisse-dalko-portfolio/static/media/ProjetReconnaissance_faciale.5cbbf1af5ab7f7e68ed8.png",
     "static/media/CitesPerdues.webp": "/narcisse-dalko-portfolio/static/media/CitesPerdues.530db869ccf419e43279.webp",
     "static/media/mafoto.jpeg": "/narcisse-dalko-portfolio/static/media/mafoto.21b68198d8fc2c5913ec.jpeg",
@@ -16,10 +16,10 @@
     "static/media/ProjetArbreBinaire.jpeg": "/narcisse-dalko-portfolio/static/media/ProjetArbreBinaire.3dc1f6fc67dd855f8e8b.jpeg",
     "index.html": "/narcisse-dalko-portfolio/index.html",
     "main.1d8c493d.css.map": "/narcisse-dalko-portfolio/static/css/main.1d8c493d.css.map",
-    "main.523f77fe.js.map": "/narcisse-dalko-portfolio/static/js/main.523f77fe.js.map"
+    "main.1375c3e5.js.map": "/narcisse-dalko-portfolio/static/js/main.1375c3e5.js.map"
   },
   "entrypoints": [
     "static/css/main.1d8c493d.css",
-    "static/js/main.523f77fe.js"
+    "static/js/main.1375c3e5.js"
   ]
 }

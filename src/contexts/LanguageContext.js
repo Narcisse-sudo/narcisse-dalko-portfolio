@@ -18,7 +18,7 @@ const translations = {
     },
     about: {
       title: "Qui suis je ?",
-      description: "Étudiant en master 2 de mathématiques pour l'ingénierie algorithmique et statistique, spécialisé en data scientist et en intelligence artificielle, avec de solide compétences en machine learning, mathématiques et statistiques. Je suis à la recherche d'un contrat d'apprentissage en data scientist de 12 mois dès septembre 2025"
+      description: "Étudiant en master 2 de mathématiques pour l'ingénierie algorithmique et statistique, spécialisé en data scientist et en intelligence artificielle, avec de solide compétences en machine learning, mathématiques et statistiques. Je suis à la recherche d'un stage en data scientist/machine learning de 6 mois dès Avril 2026"
     },
     buttons: {
       cv_fr: "📄 Télécharger mon CV (FR)",
