@@ -3,805 +3,596 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Narcisse DALKO — Data Scientist</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>Narcisse Dalko — Data scientist</title>
+<meta name="description" content="Narcisse Dalko, data scientist. Statistiques, machine learning et déploiement de modèles. Projets en détection de fraude, deep learning et modélisation prédictive.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;500;600&family=Spectral:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #050d1a;
-    --surface: #0a1628;
-    --card: #0f1f38;
-    --border: #1a3050;
-    --teal: #00e5cc;
-    --teal-dim: rgba(0,229,204,0.10);
-    --teal-glow: rgba(0,229,204,0.25);
-    --amber: #f5a623;
-    --text: #e8f4ff;
-    --muted: #6b8caf;
-    --mono: 'Space Mono', monospace;
-    --display: 'Syne', sans-serif;
+  :root{
+    --ink:#12263F;
+    --ink-soft:#4A6178;
+    --ink-faint:#7C8FA1;
+    --paper:#F5F6F3;
+    --paper-alt:#EBEDE6;
+    --line:#D6DACF;
+    --line-strong:#B9BFB2;
+    --accent:#C08A2E;
+    --accent-deep:#8A5F16;
+    --white:#FCFCFA;
+
+    --serif:'Spectral', Georgia, serif;
+    --sans:'IBM Plex Sans', system-ui, sans-serif;
+    --mono:'IBM Plex Mono', ui-monospace, monospace;
+
+    --gut:clamp(1.25rem, 4vw, 4rem);
+    --maxw:1140px;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--text); font-family: var(--display); overflow-x: hidden; }
-  #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.35; pointer-events: none; }
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 4rem; background: rgba(5,13,26,0.88); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-  .nav-logo { font-family: var(--mono); font-size: 0.85rem; color: var(--teal); letter-spacing: 0.08em; }
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--teal); }
-  section { position: relative; z-index: 1; }
-  #hero { min-height: 100vh; display: flex; align-items: center; padding: 8rem 4rem 4rem; max-width: 1400px; margin: 0 auto; }
-  .hero-content { max-width: 780px; }
-  .hero-tag { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--mono); font-size: 0.72rem; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 2rem; padding: 0.4rem 0.9rem; border: 1px solid var(--teal); border-radius: 2px; opacity: 0; animation: fadeUp 0.7s 0.2s forwards; }
-  .hero-tag::before { content: ''; width: 6px; height: 6px; background: var(--teal); border-radius: 50%; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
-  h1 { font-family: var(--display); font-size: clamp(3.5rem,8vw,7rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.7s 0.4s forwards; }
-  h1 .first { color: var(--text); display: block; }
-  h1 .last { color: var(--teal); display: block; }
-  .hero-sub { font-size: 1.05rem; color: var(--muted); line-height: 1.7; max-width: 540px; margin-bottom: 3rem; opacity: 0; animation: fadeUp 0.7s 0.6s forwards; }
-  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s 0.8s forwards; }
-  .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.85rem 2rem; font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: all 0.2s; cursor: pointer; border: none; }
-  .btn-primary { background: var(--teal); color: var(--bg); font-weight: 700; }
-  .btn-primary:hover { background: #00fff5; box-shadow: 0 0 30px var(--teal-glow); transform: translateY(-2px); }
-  .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
-  .btn-outline:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
-  .hero-stats { display: flex; gap: 3rem; margin-top: 5rem; padding-top: 3rem; border-top: 1px solid var(--border); opacity: 0; animation: fadeUp 0.7s 1s forwards; }
-  .stat-num { font-family: var(--mono); font-size: 2.2rem; font-weight: 700; color: var(--teal); line-height: 1; }
-  .stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.3rem; }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
-  .container { max-width: 1200px; margin: 0 auto; padding: 6rem 4rem; }
-  .section-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 3.5rem; }
-  .section-num { font-family: var(--mono); font-size: 0.75rem; color: var(--teal); letter-spacing: 0.1em; }
-  h2 { font-family: var(--display); font-size: clamp(2rem,4vw,3rem); font-weight: 800; letter-spacing: -0.02em; color: var(--text); }
-  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
-  .project-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; transition: all 0.3s; text-decoration: none; color: inherit; display: flex; flex-direction: column; position: relative; }
-  .project-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--teal), #0099ff); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
-  .project-card:hover { border-color: rgba(0,229,204,0.4); transform: translateY(-5px); box-shadow: 0 16px 48px rgba(0,0,0,0.5); }
-  .project-card:hover::after { transform: scaleX(1); }
-  .project-thumb { width: 100%; height: 190px; overflow: hidden; background: var(--surface); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); position: relative; }
-  .project-thumb svg { width: 100%; height: 100%; }
-  .project-thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 55%, var(--card)); }
-  .project-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
-  .project-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; }
-  .project-title { font-size: 1rem; font-weight: 700; color: var(--text); line-height: 1.3; }
-  .project-arrow { color: var(--muted); font-size: 1.1rem; transition: color 0.2s; flex-shrink: 0; margin-left: 0.5rem; }
-  .project-card:hover .project-arrow { color: var(--teal); }
-  .project-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.2rem; flex: 1; }
-  .project-desc strong { color: rgba(232,244,255,0.8); font-weight: 600; }
-  .project-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
-  .tag { font-family: var(--mono); font-size: 0.67rem; padding: 0.22rem 0.55rem; background: var(--teal-dim); color: var(--teal); border-radius: 2px; }
-  .tag.lang { background: rgba(245,166,35,0.12); color: var(--amber); }
-  .skills-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
-  .skills-group-title { font-family: var(--mono); font-size: 0.72rem; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.5rem; }
-  .skill-bar-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-  .skill-name { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); min-width: 110px; }
-  .skill-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-  .skill-fill { height: 100%; background: linear-gradient(90deg, var(--teal), #0099ff); border-radius: 2px; width: 0; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
-  .skill-pct { font-family: var(--mono); font-size: 0.68rem; color: var(--teal); min-width: 36px; text-align: right; }
-  .tools-cloud { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-  .tool-pill { font-family: var(--mono); font-size: 0.72rem; padding: 0.4rem 0.8rem; background: var(--surface); border: 1px solid var(--border); border-radius: 2px; color: var(--muted); transition: all 0.2s; }
-  .tool-pill:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-dim); }
-  .timeline { position: relative; padding-left: 2rem; }
-  .timeline::before { content: ''; position: absolute; left: 0; top: 0.5rem; bottom: 0; width: 1px; background: var(--border); }
-  .timeline-item { position: relative; padding-bottom: 2.5rem; opacity: 0; transform: translateX(-10px); transition: all 0.5s; }
-  .timeline-item.visible { opacity: 1; transform: translateX(0); }
-  .timeline-dot { position: absolute; left: -2.4rem; top: 0.35rem; width: 10px; height: 10px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 10px var(--teal); }
-  .timeline-date { font-family: var(--mono); font-size: 0.72rem; color: var(--teal); letter-spacing: 0.08em; margin-bottom: 0.4rem; }
-  .timeline-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem; }
-  .timeline-place { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.8rem; }
-  .timeline-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
-  #contact { background: var(--surface); border-top: 1px solid var(--border); }
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
-  .contact-left p { color: var(--muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 2.5rem; }
-  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
-  .contact-link { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--muted); font-family: var(--mono); font-size: 0.82rem; transition: all 0.2s; padding: 1rem 1.2rem; border: 1px solid var(--border); border-radius: 2px; background: var(--card); }
-  .contact-link:hover { color: var(--teal); border-color: var(--teal); background: var(--teal-dim); }
-  .availability { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--mono); font-size: 0.75rem; color: #4ade80; padding: 0.5rem 1rem; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); border-radius: 2px; margin-bottom: 2rem; }
-  .availability::before { content: ''; width: 7px; height: 7px; background: #4ade80; border-radius: 50%; animation: pulse 2s infinite; }
-  footer { text-align: center; padding: 2rem; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--border); position: relative; z-index: 1; }
-  footer span { color: var(--teal); }
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-  @media(max-width:768px){
-    nav{padding:1rem 1.5rem;} .nav-links{display:none;}
-    #hero{padding:7rem 1.5rem 3rem;} .container{padding:4rem 1.5rem;}
-    .skills-layout,.contact-grid{grid-template-columns:1fr;gap:2.5rem;}
-    .hero-stats{gap:1.5rem;} .inner-grid{grid-template-columns:1fr!important;}
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+
+  body{
+    font-family:var(--sans);
+    font-weight:400;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(rgba(18,38,63,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(18,38,63,.045) 1px, transparent 1px),
+      linear-gradient(rgba(18,38,63,.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(18,38,63,.028) 1px, transparent 1px);
+    background-size:96px 96px, 96px 96px, 24px 24px, 24px 24px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--accent-deep);outline-offset:3px;}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--gut);padding-right:var(--gut);}
+
+  /* ---------- Nav ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(245,246,243,.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;height:62px;}
+  .brand{font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;white-space:nowrap;}
+  .brand b{font-weight:500;}
+  .nav-links{display:flex;gap:1.9rem;list-style:none;}
+  .nav-links a{
+    font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-soft);text-decoration:none;padding-bottom:2px;border-bottom:1px solid transparent;
+    transition:color .18s, border-color .18s;
+  }
+  .nav-links a:hover{color:var(--ink);border-bottom-color:var(--accent);}
+  @media(max-width:760px){ .nav-links{display:none;} }
+
+  /* ---------- Type ---------- */
+  h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.015em;line-height:1.12;}
+  h1{font-size:clamp(2.9rem,7vw,5.1rem);}
+  h2{font-size:clamp(1.85rem,3.6vw,2.7rem);}
+  h3{font-size:1.06rem;line-height:1.35;font-weight:600;}
+
+  .eyebrow{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent-deep);display:flex;align-items:center;gap:.6rem;
+  }
+  .eyebrow::before{content:"";width:7px;height:7px;background:var(--accent);flex:none;}
+
+  .lede{font-size:1.09rem;color:var(--ink-soft);max-width:56ch;}
+  .muted{color:var(--ink-soft);}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:clamp(3.5rem,8vw,6.5rem) 0 clamp(2.5rem,5vw,4rem);}
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(2rem,5vw,4.5rem);align-items:center;}
+  @media(max-width:900px){ .hero-grid{grid-template-columns:1fr;gap:2.5rem;} }
+
+  .hero h1{margin:1.4rem 0 1.1rem;}
+  .hero h1 .sur{display:block;color:var(--ink);}
+  .hero h1 .sur em{font-style:normal;color:var(--accent-deep);}
+
+  .status{
+    display:inline-flex;align-items:center;gap:.55rem;margin-top:2rem;
+    font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;color:var(--ink-soft);
+    border:1px solid var(--line);background:var(--white);padding:.42rem .85rem;
+  }
+  .status i{width:7px;height:7px;border-radius:50%;background:#3F7D5C;flex:none;}
+
+  .actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:2.2rem;}
+  .btn{
+    display:inline-flex;align-items:center;gap:.5rem;
+    font-family:var(--mono);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;
+    text-decoration:none;padding:.78rem 1.5rem;border:1px solid var(--ink);
+    transition:background .18s, color .18s, transform .18s;
+  }
+  .btn-solid{background:var(--ink);color:var(--paper);}
+  .btn-solid:hover{background:#0A1929;transform:translateY(-1px);}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-strong);}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-1px);}
+
+  /* signature: plotted curve */
+  .plot{background:var(--white);border:1px solid var(--line);padding:1.1rem 1.2rem .9rem;}
+  .plot svg{display:block;width:100%;height:auto;}
+  .plot-cap{
+    font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--ink-faint);
+    margin-top:.65rem;display:flex;justify-content:space-between;gap:1rem;
+  }
+  .axis{stroke:var(--line-strong);stroke-width:1;}
+  .tick{stroke:var(--line);stroke-width:1;}
+  .curve{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;}
+  .curve-b{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:3 4;opacity:.85;}
+  .lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;fill:var(--ink-faint);letter-spacing:.06em;}
+  .lbl-hi{fill:var(--accent-deep);}
+
+  .draw{stroke-dasharray:800;stroke-dashoffset:800;animation:draw 1.9s .35s cubic-bezier(.5,0,.2,1) forwards;}
+  .draw-b{stroke-dashoffset:800;animation:draw 1.9s .8s cubic-bezier(.5,0,.2,1) forwards;}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  .pt{opacity:0;animation:pop .5s 2.1s forwards;}
+  @keyframes pop{to{opacity:1;}}
+
+  /* ---------- Facts ---------- */
+  .facts{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--white);}
+  .facts-in{display:grid;grid-template-columns:repeat(3,1fr);}
+  @media(max-width:700px){ .facts-in{grid-template-columns:1fr;} }
+  .fact{padding:1.6rem 0;}
+  .facts-in .fact + .fact{border-left:1px solid var(--line);padding-left:clamp(1rem,3vw,2.2rem);}
+  @media(max-width:700px){
+    .facts-in .fact + .fact{border-left:0;border-top:1px solid var(--line);padding-left:0;}
+  }
+  .fact-n{font-family:var(--serif);font-size:2.15rem;line-height:1;font-weight:500;}
+  .fact-n span{font-size:1.05rem;color:var(--ink-faint);}
+  .fact-l{font-family:var(--mono);font-size:.72rem;letter-spacing:.09em;color:var(--ink-soft);margin-top:.55rem;text-transform:uppercase;}
+
+  /* ---------- Sections ---------- */
+  section{padding:clamp(3.5rem,7vw,6rem) 0;}
+  .band{background:var(--paper-alt);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .sec-head{margin-bottom:clamp(2rem,4vw,3rem);}
+  .sec-head h2{margin-top:.7rem;}
+  .sec-head p{margin-top:.7rem;}
+
+  /* ---------- Parcours ---------- */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4.5rem);}
+  @media(max-width:860px){ .two{grid-template-columns:1fr;gap:3rem;} }
+
+  .col-label{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);padding-bottom:.7rem;border-bottom:1px solid var(--line-strong);margin-bottom:1.9rem;
+  }
+  .tl{list-style:none;position:relative;padding-left:1.7rem;}
+  .tl::before{content:"";position:absolute;left:0;top:.55rem;bottom:.4rem;width:1px;background:var(--line-strong);}
+  .tl li{position:relative;padding-bottom:2rem;}
+  .tl li:last-child{padding-bottom:0;}
+  .tl li::before{
+    content:"";position:absolute;left:-1.7rem;top:.55rem;width:9px;height:1px;background:var(--line-strong);
+  }
+  .tl li::after{
+    content:"";position:absolute;left:-1.95rem;top:.2rem;width:7px;height:7px;background:var(--paper);border:1px solid var(--ink);
+  }
+  .band .tl li::after{background:var(--paper-alt);}
+  .tl-date{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--accent-deep);}
+  .tl h3{margin:.3rem 0 .15rem;}
+  .tl-org{font-size:.86rem;color:var(--ink-soft);}
+  .tl-desc{font-size:.9rem;color:var(--ink-soft);margin-top:.6rem;}
+
+  /* ---------- Projets ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);}
+  .card{
+    background:var(--white);padding:1.6rem 1.5rem 1.4rem;text-decoration:none;display:flex;flex-direction:column;
+    transition:background .2s;
+  }
+  .card:hover{background:#F8F9F5;}
+  .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;}
+  .card h3{transition:color .2s;}
+  .card:hover h3{color:var(--accent-deep);}
+  .card-go{font-family:var(--mono);font-size:.9rem;color:var(--ink-faint);flex:none;transition:transform .2s,color .2s;}
+  .card:hover .card-go{transform:translate(2px,-2px);color:var(--accent-deep);}
+  .card-desc{font-size:.88rem;color:var(--ink-soft);margin:.75rem 0 1.2rem;flex:1;}
+  .card-desc strong{font-weight:600;color:var(--ink);}
+  .tags{display:flex;flex-wrap:wrap;gap:.35rem;}
+  .tag{
+    font-family:var(--mono);font-size:.67rem;letter-spacing:.03em;color:var(--ink-soft);
+    border:1px solid var(--line);padding:.16rem .45rem;
+  }
+  .tag-key{border-color:var(--accent);color:var(--accent-deep);}
+
+  /* ---------- Compétences ---------- */
+  .skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2.4rem 3rem;}
+  .skill-h{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);
+    padding-bottom:.6rem;border-bottom:1px solid var(--line-strong);margin-bottom:1rem;
+  }
+  .skill-list{list-style:none;font-size:.92rem;color:var(--ink-soft);}
+  .skill-list li{padding:.34rem 0;border-bottom:1px dotted var(--line);}
+  .skill-list li:last-child{border-bottom:0;}
+  .skill-list b{font-weight:600;color:var(--ink);}
+
+  /* ---------- Contact ---------- */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:start;}
+  @media(max-width:860px){ .contact-grid{grid-template-columns:1fr;} }
+  .clist{list-style:none;border-top:1px solid var(--line-strong);}
+  .clist li{border-bottom:1px solid var(--line);}
+  .clist a,.clist span{
+    display:grid;grid-template-columns:88px 1fr;gap:1rem;align-items:baseline;
+    padding:.95rem .2rem;text-decoration:none;transition:background .18s,padding-left .18s;
+  }
+  .clist a:hover{background:var(--white);padding-left:.6rem;}
+  .clist em{font-family:var(--mono);font-size:.7rem;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);font-style:normal;}
+  .clist b{font-weight:450;font-size:.95rem;word-break:break-word;}
+
+  footer{border-top:1px solid var(--line);padding:1.8rem 0;}
+  .foot-in{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:space-between;font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--ink-faint);}
+
+  /* ---------- Reveal ---------- */
+  .rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease, transform .6s ease;}
+  .rv.on{opacity:1;transform:none;}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important;scroll-behavior:auto !important;}
+    .rv{opacity:1;transform:none;}
+    .draw,.draw-b{stroke-dashoffset:0;}
+    .pt{opacity:1;}
   }
 </style>
 </head>
 <body>
-<canvas id="canvas-bg"></canvas>
 
-<nav>
-  <div class="nav-logo">ND.portfolio</div>
-  <ul class="nav-links">
-    <li><a href="#projects">projets</a></li>
-    <li><a href="#skills">compétences</a></li>
-    <li><a href="#experience">parcours</a></li>
-    <li><a href="#contact">contact</a></li>
-  </ul>
-  <a href="https://github.com/Narcisse-sudo" target="_blank" class="btn btn-outline" style="padding:0.55rem 1.2rem;font-size:0.72rem;">GitHub ↗</a>
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">Narcisse <b>Dalko</b></a>
+    <ul class="nav-links">
+      <li><a href="#parcours">Parcours</a></li>
+      <li><a href="#projets">Projets</a></li>
+      <li><a href="#competences">Compétences</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="brand" href="https://github.com/Narcisse-sudo" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
 </nav>
 
-<section id="hero">
-  <div class="hero-content">
-    <div class="hero-tag">Disponible · Alternance sept. 2026</div>
-    <h1><span class="first">Narcisse</span><span class="last">DALKO</span></h1>
-    <p class="hero-sub">Data Scientist spécialisé en Machine Learning, Deep Learning et NLP. Actuellement en M2 Mathématiques/Statistiques à l'Université de Bourgogne.</p>
-    <div class="hero-actions">
-      <a href="#projects" class="btn btn-primary">Voir mes projets →</a>
-      <a href="#contact" class="btn btn-outline">Me contacter</a>
+<header id="top" class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Data scientist — statistiques &amp; machine learning</p>
+      <h1><span class="sur">Narcisse</span><span class="sur"><em>Dalko</em></span></h1>
+      <p class="lede">
+        Mathématicien de formation, je conçois des modèles destinés à être utilisés :
+        de la préparation des données au déploiement, avec une attention constante
+        à l'évaluation et à l'explicabilité des résultats.
+      </p>
+      <p class="status"><i></i> Alternance data scientist en assurance — septembre 2026</p>
+      <div class="actions">
+        <a class="btn btn-solid" href="#projets">Voir les projets</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/narcisse-dalko" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn btn-ghost" href="mailto:dalkonarcisse19@gmail.com">Écrire un message</a>
+      </div>
     </div>
-    <div class="hero-stats">
-      <div><div class="stat-num">13</div><div class="stat-label">Repos GitHub</div></div>
-      <div><div class="stat-num">93%</div><div class="stat-label">Taux réussite élèves</div></div>
-      <div><div class="stat-num">3+</div><div class="stat-label">Années Data/ML</div></div>
+
+    <figure class="plot" aria-label="Courbe du score Dice au fil des époques d'entraînement, atteignant 0,93">
+      <svg viewBox="0 0 480 250" role="img">
+        <!-- ticks -->
+        <line class="tick" x1="52" y1="42" x2="452" y2="42"></line>
+        <line class="tick" x1="52" y1="90" x2="452" y2="90"></line>
+        <line class="tick" x1="52" y1="138" x2="452" y2="138"></line>
+        <line class="tick" x1="52" y1="186" x2="452" y2="186"></line>
+        <!-- axes -->
+        <line class="axis" x1="52" y1="24" x2="52" y2="214"></line>
+        <line class="axis" x1="52" y1="214" x2="452" y2="214"></line>
+        <!-- y labels -->
+        <text class="lbl" x="16" y="46">1,00</text>
+        <text class="lbl" x="16" y="94">0,75</text>
+        <text class="lbl" x="16" y="142">0,50</text>
+        <text class="lbl" x="16" y="190">0,25</text>
+        <!-- x labels -->
+        <text class="lbl" x="46" y="230">0</text>
+        <text class="lbl" x="240" y="230">époques</text>
+        <text class="lbl" x="432" y="230">60</text>
+        <!-- validation (dashed) -->
+        <path class="curve-b draw-b" d="M56,200 C110,170 140,120 190,96 C250,70 300,62 350,58 C395,55 425,54 448,54"></path>
+        <!-- train -->
+        <path class="curve draw" d="M56,196 C108,160 138,108 188,84 C248,58 300,50 352,47 C396,45 428,44 448,44"></path>
+        <!-- end marker -->
+        <g class="pt">
+          <circle cx="448" cy="44" r="4" fill="#C08A2E"></circle>
+          <line x1="52" y1="44" x2="448" y2="44" stroke="#C08A2E" stroke-width="1" stroke-dasharray="2 5" opacity=".55"></line>
+          <text class="lbl lbl-hi" x="376" y="34">Dice 0,93</text>
+        </g>
+      </svg>
+      <figcaption class="plot-cap">
+        <span>Segmentation cellulaire 3D · INRAE</span>
+        <span>— train &nbsp;··· validation</span>
+      </figcaption>
+    </figure>
+  </div>
+</header>
+
+<div class="facts">
+  <div class="wrap facts-in">
+    <div class="fact">
+      <div class="fact-n">0,93</div>
+      <div class="fact-l">Score Dice — segmentation 3D U-Net</div>
+    </div>
+    <div class="fact">
+      <div class="fact-n">8 <span>projets</span></div>
+      <div class="fact-l">Publiés et documentés sur GitHub</div>
+    </div>
+    <div class="fact">
+      <div class="fact-n">M2 <span>Paris-Saclay</span></div>
+      <div class="fact-l">Data science — santé, assurance, finance</div>
+    </div>
+  </div>
+</div>
+
+<section id="parcours">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Parcours</p>
+      <h2>Des mathématiques vers la donnée appliquée</h2>
+      <p class="lede">Une licence de mathématiques fondamentales au Bénin, puis une spécialisation
+      progressive vers la statistique, le machine learning et leur mise en production.</p>
+    </div>
+
+    <div class="two">
+      <div class="rv">
+        <p class="col-label">Expériences</p>
+        <ul class="tl">
+          <li>
+            <p class="tl-date">Mars 2026 → aujourd'hui</p>
+            <h3>Stagiaire data scientist — imagerie 4D</h3>
+            <p class="tl-org">INRAE, UMR FARE · Reims</p>
+            <p class="tl-desc">Pipeline de segmentation cellulaire 3D U-Net sous PyTorch sur images
+            de microscopie confocale, pour l'étude de la déconstruction des biomasses lignocellulosiques.
+            Entraînement sur le supercalculateur Roméo, score Dice porté à 0,93 sur le jeu de test.</p>
+          </li>
+          <li>
+            <p class="tl-date">Depuis mai 2025</p>
+            <h3>Animateur scientifique</h3>
+            <p class="tl-org">Les Petits Débrouillards · Dijon</p>
+            <p class="tl-desc">Ateliers d'initiation aux sciences et à la technologie auprès de publics jeunes.</p>
+          </li>
+          <li>
+            <p class="tl-date">Juin → août 2024</p>
+            <h3>Stagiaire data science</h3>
+            <p class="tl-org">RightCom · Cotonou, Bénin</p>
+            <p class="tl-desc">Modèles de scoring et de segmentation client (K-Means, Random Forest)
+            sur données CRM. Identification de segments à fort potentiel et restitution aux équipes métier.</p>
+          </li>
+          <li>
+            <p class="tl-date">Sept. 2023 → mai 2024</p>
+            <h3>Enseignant de mathématiques</h3>
+            <p class="tl-org">Complexe scolaire franco-arabe de Zongo · Cotonou</p>
+            <p class="tl-desc">Trois classes, environ 65 élèves : cours, préparation aux examens et
+            corrections. 93 % de réussite aux examens nationaux.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="rv">
+        <p class="col-label">Formation</p>
+        <ul class="tl">
+          <li>
+            <p class="tl-date">2026 → 2027</p>
+            <h3>M2 Data scientist : santé, assurance et finance</h3>
+            <p class="tl-org">Université Paris-Saclay</p>
+            <p class="tl-desc">Modélisation appliquée aux risques, à l'actuariat et aux données de santé.
+            Formation suivie en alternance.</p>
+          </li>
+          <li>
+            <p class="tl-date">2024 → 2026</p>
+            <h3>M2 Mathématiques pour l'ingénierie, algorithmique et statistique</h3>
+            <p class="tl-org">Université de Bourgogne · Dijon</p>
+            <p class="tl-desc">Statistique, optimisation, probabilités et machine learning,
+            couplés à l'informatique scientifique (Python, R, SAS, C++).</p>
+          </li>
+          <li>
+            <p class="tl-date">2022 → 2023</p>
+            <h3>Licence de mathématiques fondamentales</h3>
+            <p class="tl-org">Université d'Abomey-Calavi · Bénin</p>
+            <p class="tl-desc">Analyse, algèbre linéaire, probabilités et statistique mathématique.</p>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="projects">
-  <div class="container">
-    <div class="section-header"><span class="section-num">01 /</span><h2>Projets</h2></div>
-    <div class="projects-grid">
+<section id="projets" class="band">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Projets</p>
+      <h2>Ce que j'ai construit</h2>
+      <p class="lede">Huit projets menés de bout en bout, du cadrage du problème au déploiement.
+      Chaque carte renvoie vers le dépôt GitHub correspondant.</p>
+    </div>
 
-      <!-- TRANSFORMER NLP -->
-      <a href="https://github.com/Narcisse-sudo/transformer-sentiment-analysis" target="_blank" class="project-card">
-        <div class="project-thumb">
-          <svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <rect width="340" height="190" fill="#0a1628"/>
-            <!-- attention heatmap -->
-            <text x="20" y="16" font-family="monospace" font-size="8.5" fill="#6b8caf">Self-Attention Matrix</text>
-            <g opacity="0.85">
-              <rect x="20" y="22" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.9"/><rect x="40" y="22" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.25"/><rect x="60" y="22" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.1"/><rect x="80" y="22" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.55"/><rect x="100" y="22" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.3"/><rect x="120" y="22" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.7"/>
-              <rect x="20" y="42" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.15"/><rect x="40" y="42" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.92"/><rect x="60" y="42" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.35"/><rect x="80" y="42" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.1"/><rect x="100" y="42" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.6"/><rect x="120" y="42" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.2"/>
-              <rect x="20" y="62" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.1"/><rect x="40" y="62" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.4"/><rect x="60" y="62" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.88"/><rect x="80" y="62" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.45"/><rect x="100" y="62" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.15"/><rect x="120" y="62" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.5"/>
-              <rect x="20" y="82" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.05"/><rect x="40" y="82" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.2"/><rect x="60" y="82" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.5"/><rect x="80" y="82" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.9"/><rect x="100" y="82" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.6"/><rect x="120" y="82" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.1"/>
-              <rect x="20" y="102" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.3"/><rect x="40" y="102" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.1"/><rect x="60" y="102" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.25"/><rect x="80" y="102" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.6"/><rect x="100" y="102" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.92"/><rect x="120" y="102" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.35"/>
-              <rect x="20" y="122" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.55"/><rect x="40" y="122" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.3"/><rect x="60" y="122" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.1"/><rect x="80" y="122" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.25"/><rect x="100" y="122" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.45"/><rect x="120" y="122" width="18" height="18" rx="1" fill="#00e5cc" opacity="0.8"/>
-            </g>
-            <!-- token labels -->
-            <g font-family="monospace" font-size="7" fill="#6b8caf">
-              <text x="29" y="155" text-anchor="middle">Le</text><text x="49" y="155" text-anchor="middle">film</text><text x="69" y="155" text-anchor="middle">est</text><text x="89" y="155" text-anchor="middle">très</text><text x="109" y="155" text-anchor="middle">bon</text><text x="129" y="155" text-anchor="middle">!</text>
-            </g>
-            <!-- sentiment bars -->
-            <rect x="175" y="22" width="145" height="150" rx="3" fill="#0f1f38" stroke="#1a3050" stroke-width="0.8"/>
-            <text x="185" y="38" font-family="monospace" font-size="8.5" fill="#00e5cc">Résultats Modèles</text>
-            <g font-family="monospace" font-size="7.5" fill="#6b8caf">
-              <text x="185" y="58">Transformer</text>
-              <rect x="185" y="62" width="120" height="7" rx="1" fill="#1a3050"/>
-              <rect x="185" y="62" width="107" height="7" rx="1" fill="#00e5cc" opacity="0.85"/>
-              <text x="297" y="69" font-size="7" fill="#00e5cc">89%</text>
-              <text x="185" y="86">LSTM</text>
-              <rect x="185" y="90" width="120" height="7" rx="1" fill="#1a3050"/>
-              <rect x="185" y="90" width="88" height="7" rx="1" fill="#0099ff" opacity="0.7"/>
-              <text x="277" y="97" font-size="7" fill="#0099ff">73%</text>
-              <text x="185" y="114">CNN</text>
-              <rect x="185" y="118" width="120" height="7" rx="1" fill="#1a3050"/>
-              <rect x="185" y="118" width="80" height="7" rx="1" fill="#0099ff" opacity="0.6"/>
-              <text x="269" y="125" font-size="7" fill="#0099ff">66%</text>
-              <text x="185" y="142">MLP</text>
-              <rect x="185" y="146" width="120" height="7" rx="1" fill="#1a3050"/>
-              <rect x="185" y="146" width="70" height="7" rx="1" fill="#6b8caf" opacity="0.6"/>
-              <text x="259" y="153" font-size="7" fill="#6b8caf">58%</text>
-            </g>
-            <text x="20" y="175" font-family="monospace" font-size="7.5" fill="#6b8caf">Accuracy</text>
-          </svg>
-          <div class="project-thumb-overlay"></div>
-        </div>
-        <div class="project-body">
-          <div class="project-top">
-            <div class="project-title">Transformer & Analyse de Sentiments NLP</div>
-            <span class="project-arrow">↗</span>
-          </div>
-          <div class="project-desc">
-            Formulation mathématique rigoureuse du mécanisme <strong>Self-Attention</strong> et implémentation d'une architecture Transformer complète avec PyTorch. Le projet couvre la <strong>classification de texte</strong> (analyse de sentiments sur critiques de films), la classification d'images, et une étude comparative poussée avec MLP, CNN et LSTM. Visualisation des <strong>matrices d'attention</strong> pour interpréter les décisions du modèle. Accuracy finale : 89%.
-          </div>
-          <div class="project-tags">
-            <span class="tag">Transformer</span><span class="tag">Self-Attention</span><span class="tag">NLP</span><span class="tag">CNN</span><span class="tag">LSTM</span><span class="tag lang">Python</span>
-          </div>
-        </div>
+    <div class="grid rv">
+
+      <a class="card" href="https://github.com/Narcisse-sudo/detecter-fraude-bancaire" target="_blank" rel="noopener">
+        <div class="card-top"><h3>Détection de fraude bancaire</h3><span class="card-go">↗</span></div>
+        <p class="card-desc">Pipeline complet de détection d'anomalies sur transactions, avec traitement
+        du <strong>déséquilibre des classes</strong> (3,5 % de fraudes) et comparaison Random Forest,
+        XGBoost et Isolation Forest. Déploiement en API REST FastAPI, interface Streamlit et
+        conteneurisation Docker Compose.</p>
+        <div class="tags"><span class="tag tag-key">XGBoost</span><span class="tag">FastAPI</span><span class="tag">Streamlit</span><span class="tag">Docker</span><span class="tag">Python</span></div>
       </a>
 
-      <!-- FRAUD DETECTION -->
-      <a href="https://github.com/Narcisse-sudo/detecter-fraude-bancaire" target="_blank" class="project-card">
-        <div class="project-thumb">
-          <svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <rect width="340" height="190" fill="#0a1628"/>
-            <text x="22" y="16" font-family="monospace" font-size="8.5" fill="#6b8caf">Détection d'anomalies — Espace latent</text>
-            <rect x="20" y="22" width="190" height="155" rx="2" fill="none" stroke="#1a3050" stroke-width="0.5"/>
-            <line x1="20" y1="177" x2="210" y2="177" stroke="#1a3050" stroke-width="1"/>
-            <line x1="20" y1="22" x2="20" y2="177" stroke="#1a3050" stroke-width="1"/>
-            <!-- normal cluster -->
-            <g fill="#0099ff" opacity="0.55">
-              <circle cx="55" cy="145" r="3.5"/><circle cx="65" cy="138" r="3"/><circle cx="72" cy="150" r="3"/>
-              <circle cx="80" cy="132" r="3.5"/><circle cx="90" cy="142" r="3"/><circle cx="100" cy="130" r="3.5"/>
-              <circle cx="108" cy="148" r="3"/><circle cx="115" cy="135" r="3.5"/><circle cx="60" cy="155" r="3"/>
-              <circle cx="75" cy="125" r="3"/><circle cx="85" cy="158" r="3.5"/><circle cx="95" cy="122" r="3"/>
-              <circle cx="105" cy="162" r="3"/><circle cx="50" cy="140" r="3.5"/>
-            </g>
-            <!-- fraud cluster -->
-            <g fill="#ff4b6e" opacity="0.9">
-              <circle cx="175" cy="38" r="6"/><circle cx="162" cy="30" r="5"/>
-              <circle cx="185" cy="50" r="6"/><circle cx="155" cy="45" r="5"/>
-              <circle cx="178" cy="27" r="5.5"/>
-            </g>
-            <!-- alert markers -->
-            <g stroke="#ff4b6e" fill="none" stroke-width="1.5">
-              <polygon points="175,28 181,40 169,40" opacity="0.6"/>
-              <polygon points="185,42 191,54 179,54" opacity="0.5"/>
-            </g>
-            <!-- decision boundary -->
-            <path d="M20,105 Q70,95 120,100 Q155,105 210,72" stroke="#00e5cc" stroke-width="1.5" fill="none" stroke-dasharray="5,3" opacity="0.6"/>
-            <!-- labels -->
-            <text x="65" y="172" font-family="monospace" font-size="7" fill="#0099ff">Normal (96.5%)</text>
-            <text x="148" y="80" font-family="monospace" font-size="7" fill="#ff4b6e">Fraude</text>
-            <!-- metrics right -->
-            <rect x="222" y="22" width="108" height="155" rx="3" fill="#0f1f38" stroke="#1a3050" stroke-width="0.8"/>
-            <text x="232" y="38" font-family="monospace" font-size="8" fill="#00e5cc">Pipeline</text>
-            <g font-family="monospace" font-size="7.5" fill="#6b8caf">
-              <rect x="228" y="44" width="96" height="18" rx="2" fill="rgba(0,153,255,0.1)" stroke="rgba(0,153,255,0.3)" stroke-width="0.8"/>
-              <text x="276" y="57" fill="#0099ff" text-anchor="middle">EDA + Nettoyage</text>
-              <line x1="276" y1="62" x2="276" y2="70" stroke="#1a3050" stroke-width="1"/>
-              <rect x="228" y="70" width="96" height="18" rx="2" fill="rgba(0,153,255,0.1)" stroke="rgba(0,153,255,0.3)" stroke-width="0.8"/>
-              <text x="276" y="83" fill="#0099ff" text-anchor="middle">XGBoost Model</text>
-              <line x1="276" y1="88" x2="276" y2="96" stroke="#1a3050" stroke-width="1"/>
-              <rect x="228" y="96" width="96" height="18" rx="2" fill="rgba(0,229,204,0.1)" stroke="rgba(0,229,204,0.3)" stroke-width="0.8"/>
-              <text x="276" y="109" fill="#00e5cc" text-anchor="middle">FastAPI REST</text>
-              <line x1="276" y1="114" x2="276" y2="122" stroke="#1a3050" stroke-width="1"/>
-              <rect x="228" y="122" width="96" height="18" rx="2" fill="rgba(0,229,204,0.1)" stroke="rgba(0,229,204,0.3)" stroke-width="0.8"/>
-              <text x="276" y="135" fill="#00e5cc" text-anchor="middle">Streamlit UI</text>
-              <line x1="276" y1="140" x2="276" y2="148" stroke="#1a3050" stroke-width="1"/>
-              <rect x="228" y="148" width="96" height="18" rx="2" fill="rgba(245,166,35,0.1)" stroke="rgba(245,166,35,0.3)" stroke-width="0.8"/>
-              <text x="276" y="161" fill="#f5a623" text-anchor="middle">Docker Compose</text>
-            </g>
-          </svg>
-          <div class="project-thumb-overlay"></div>
-        </div>
-        <div class="project-body">
-          <div class="project-top">
-            <div class="project-title">Détection de Fraude Bancaire</div>
-            <span class="project-arrow">↗</span>
-          </div>
-          <div class="project-desc">
-            Pipeline end-to-end de détection d'anomalies sur des transactions bancaires. <strong>EDA approfondie</strong> du déséquilibre de classes (96.5% normal / 3.5% fraude), nettoyage et feature engineering. Comparaison Random Forest, XGBoost et Isolation Forest. <strong>Déploiement complet</strong> avec une API REST via FastAPI, interface Streamlit et orchestration Docker Compose — application containerisée prête pour la production.
-          </div>
-          <div class="project-tags">
-            <span class="tag">FastAPI</span><span class="tag">Streamlit</span><span class="tag">Docker</span><span class="tag">XGBoost</span><span class="tag">EDA</span><span class="tag lang">Python</span>
-          </div>
-        </div>
+      <a class="card" href="https://github.com/Narcisse-sudo/Churn-bank" target="_blank" rel="noopener">
+        <div class="card-top"><h3>Prédiction du churn bancaire</h3><span class="card-go">↗</span></div>
+        <p class="card-desc">Analyse comportementale de clients pour anticiper le risque d'attrition :
+        exploration des corrélations (ancienneté, solde, produits détenus, activité), rééquilibrage par
+        <strong>SMOTE</strong> et lecture des variables les plus influentes pour orienter la rétention.</p>
+        <div class="tags"><span class="tag tag-key">SMOTE</span><span class="tag">Classification</span><span class="tag">Scikit-learn</span><span class="tag">Python</span></div>
       </a>
 
-      <!-- CHURN -->
-      <a href="https://github.com/Narcisse-sudo/Churn-bank" target="_blank" class="project-card">
-        <div class="project-thumb">
-          <svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <rect width="340" height="190" fill="#0a1628"/>
-            <text x="20" y="16" font-family="monospace" font-size="8.5" fill="#6b8caf">Churn Rate par segment d'âge</text>
-            <line x1="30" y1="155" x2="230" y2="155" stroke="#1a3050" stroke-width="1"/>
-            <line x1="30" y1="25" x2="30" y2="155" stroke="#1a3050" stroke-width="1"/>
-            <!-- bars -->
-            <rect x="42" y="100" width="30" height="55" rx="2" fill="#0099ff" opacity="0.7"/>
-            <text x="57" y="97" font-family="monospace" font-size="7" fill="#0099ff" text-anchor="middle">22%</text>
-            <rect x="84" y="75" width="30" height="80" rx="2" fill="#0099ff" opacity="0.7"/>
-            <text x="99" y="72" font-family="monospace" font-size="7" fill="#0099ff" text-anchor="middle">32%</text>
-            <rect x="126" y="120" width="30" height="35" rx="2" fill="#00e5cc" opacity="0.8"/>
-            <text x="141" y="117" font-family="monospace" font-size="7" fill="#00e5cc" text-anchor="middle">14%</text>
-            <rect x="168" y="55" width="30" height="100" rx="2" fill="#ff4b6e" opacity="0.8"/>
-            <text x="183" y="52" font-family="monospace" font-size="7" fill="#ff4b6e" text-anchor="middle">41%</text>
-            <rect x="210" y="85" width="30" height="70" rx="2" fill="#0099ff" opacity="0.65"/>
-            <text x="225" y="82" font-family="monospace" font-size="7" fill="#0099ff" text-anchor="middle">28%</text>
-            <!-- labels -->
-            <g font-family="monospace" font-size="7" fill="#6b8caf">
-              <text x="57" y="168" text-anchor="middle">18-25</text><text x="99" y="168" text-anchor="middle">26-35</text>
-              <text x="141" y="168" text-anchor="middle">36-45</text><text x="183" y="168" text-anchor="middle">46-55</text>
-              <text x="225" y="168" text-anchor="middle">55+</text>
-            </g>
-            <!-- feature importance right -->
-            <rect x="252" y="18" width="78" height="162" rx="3" fill="#0f1f38" stroke="#1a3050" stroke-width="0.8"/>
-            <text x="258" y="34" font-family="monospace" font-size="7.5" fill="#6b8caf">Feature Imp.</text>
-            <g font-family="monospace" font-size="7" fill="#6b8caf">
-              <text x="258" y="52">Ancienneté</text>
-              <rect x="258" y="56" width="62" height="5" rx="1" fill="#1a3050"/>
-              <rect x="258" y="56" width="55" height="5" rx="1" fill="#00e5cc" opacity="0.9"/>
-              <text x="258" y="76">Nb produits</text>
-              <rect x="258" y="80" width="62" height="5" rx="1" fill="#1a3050"/>
-              <rect x="258" y="80" width="44" height="5" rx="1" fill="#00e5cc" opacity="0.8"/>
-              <text x="258" y="100">Solde moy.</text>
-              <rect x="258" y="104" width="62" height="5" rx="1" fill="#1a3050"/>
-              <rect x="258" y="104" width="36" height="5" rx="1" fill="#00e5cc" opacity="0.7"/>
-              <text x="258" y="124">Activité</text>
-              <rect x="258" y="128" width="62" height="5" rx="1" fill="#1a3050"/>
-              <rect x="258" y="128" width="26" height="5" rx="1" fill="#f5a623" opacity="0.8"/>
-              <text x="258" y="148">Score crédit</text>
-              <rect x="258" y="152" width="62" height="5" rx="1" fill="#1a3050"/>
-              <rect x="258" y="152" width="18" height="5" rx="1" fill="#f5a623" opacity="0.7"/>
-            </g>
-            <text x="258" y="174" font-family="monospace" font-size="7" fill="#6b8caf">SMOTE applied</text>
-          </svg>
-          <div class="project-thumb-overlay"></div>
-        </div>
-        <div class="project-body">
-          <div class="project-top">
-            <div class="project-title">Prédiction du Churn Bancaire</div>
-            <span class="project-arrow">↗</span>
-          </div>
-          <div class="project-desc">
-            Analyse comportementale de clients bancaires pour prédire le risque d'attrition. <strong>Exploration des corrélations</strong> entre variables (ancienneté, solde, nombre de produits, activité), traitement du déséquilibre des classes avec <strong>SMOTE</strong>. Modèle de classification supervisée avec analyse approfondie de l'importance des features. Identification des segments à risque pour orienter les stratégies de rétention.
-          </div>
-          <div class="project-tags">
-            <span class="tag">Classification</span><span class="tag">SMOTE</span><span class="tag">Scikit-learn</span><span class="tag">EDA</span><span class="tag lang">Jupyter</span>
-          </div>
-        </div>
+      <a class="card" href="https://github.com/Narcisse-sudo/transformer-sentiment-analysis" target="_blank" rel="noopener">
+        <div class="card-top"><h3>Transformer &amp; analyse de sentiments</h3><span class="card-go">↗</span></div>
+        <p class="card-desc">Formulation mathématique du mécanisme de <strong>self-attention</strong> puis
+        implémentation d'une architecture Transformer sous PyTorch. Comparaison avec MLP, CNN et LSTM
+        sur du texte et de l'image, avec visualisation des matrices d'attention.</p>
+        <div class="tags"><span class="tag tag-key">Transformer</span><span class="tag">NLP</span><span class="tag">PyTorch</span><span class="tag">LSTM</span></div>
       </a>
 
-      <!-- REAL ESTATE -->
-      <a href="https://github.com/Narcisse-sudo/Real-Estate-Price" target="_blank" class="project-card">
-        <div class="project-thumb">
-          <svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <rect width="340" height="190" fill="#0a1628"/>
-            <text x="22" y="16" font-family="monospace" font-size="8.5" fill="#6b8caf">Prix réel vs Prédit (k€)</text>
-            <rect x="20" y="22" width="175" height="155" rx="2" fill="none" stroke="#1a3050" stroke-width="0.5"/>
-            <line x1="20" y1="177" x2="195" y2="177" stroke="#1a3050" stroke-width="1"/>
-            <line x1="20" y1="22" x2="20" y2="177" stroke="#1a3050" stroke-width="1"/>
-            <line x1="20" y1="177" x2="195" y2="22" stroke="#00e5cc" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.45"/>
-            <g fill="#0099ff" opacity="0.7">
-              <circle cx="38" cy="162" r="3.5"/><circle cx="52" cy="148" r="3"/><circle cx="64" cy="138" r="3.5"/>
-              <circle cx="76" cy="126" r="3"/><circle cx="88" cy="117" r="3.5"/><circle cx="100" cy="107" r="3"/>
-              <circle cx="112" cy="97" r="3.5"/><circle cx="122" cy="88" r="3"/><circle cx="134" cy="79" r="3.5"/>
-              <circle cx="146" cy="68" r="3"/><circle cx="157" cy="58" r="3.5"/><circle cx="168" cy="50" r="3"/>
-              <circle cx="178" cy="40" r="3.5"/>
-              <circle cx="42" cy="154" r="3"/><circle cx="58" cy="144" r="3.5"/><circle cx="70" cy="132" r="3"/>
-              <circle cx="83" cy="122" r="3.5"/><circle cx="95" cy="110" r="3"/>
-              <circle cx="107" cy="100" r="3.5"/><circle cx="119" cy="92" r="3"/><circle cx="132" cy="82" r="3.5"/>
-              <circle cx="144" cy="72" r="3"/><circle cx="155" cy="62" r="3.5"/>
-            </g>
-            <rect x="210" y="22" width="118" height="155" rx="3" fill="#0f1f38" stroke="#1a3050" stroke-width="0.8"/>
-            <text x="220" y="40" font-family="monospace" font-size="8.5" fill="#00e5cc">Métriques</text>
-            <g font-family="monospace" fill="#6b8caf">
-              <text x="220" y="60" font-size="8">R² Score</text>
-              <text x="220" y="76" font-size="18" fill="#00e5cc" font-weight="700">0.91</text>
-              <text x="220" y="100" font-size="8">RMSE (k€)</text>
-              <text x="220" y="116" font-size="18" fill="#f5a623" font-weight="700">18.3</text>
-              <text x="220" y="140" font-size="8">MAE (k€)</text>
-              <text x="220" y="156" font-size="18" fill="#0099ff" font-weight="700">12.7</text>
-              <text x="220" y="172" font-size="7">1460 samples · 79 features</text>
-            </g>
-          </svg>
-          <div class="project-thumb-overlay"></div>
-        </div>
-        <div class="project-body">
-          <div class="project-top">
-            <div class="project-title">Prévision des Prix Immobiliers</div>
-            <span class="project-arrow">↗</span>
-          </div>
-          <div class="project-desc">
-            Prédiction du prix de vente de maisons à partir de 79 variables (surface, localisation, état, équipements). <strong>Feature engineering avancé</strong> : encodage catégoriel, gestion des valeurs manquantes, normalisation. Sélection via matrice de corrélation. Modèles comparés : <strong>Linear Regression, Ridge, Lasso, Random Forest et Gradient Boosting</strong>. R² final de 0.91, RMSE de 18 300€ sur 1 460 observations.
-          </div>
-          <div class="project-tags">
-            <span class="tag">Régression</span><span class="tag">Feature Engineering</span><span class="tag">Gradient Boosting</span><span class="tag">Ridge/Lasso</span><span class="tag lang">Jupyter</span>
-          </div>
-        </div>
+      <a class="card" href="https://github.com/Narcisse-sudo/Real-Estate-Price" target="_blank" rel="noopener">
+        <div class="card-top"><h3>Prévision des prix immobiliers</h3><span class="card-go">↗</span></div>
+        <p class="card-desc">Régression sur 79 variables décrivant des biens résidentiels :
+        <strong>feature engineering</strong>, encodage catégoriel, traitement des valeurs manquantes,
+        puis comparaison de la régression linéaire, Ridge, Lasso, Random Forest et Gradient Boosting.</p>
+        <div class="tags"><span class="tag tag-key">Régression</span><span class="tag">Ridge / Lasso</span><span class="tag">Gradient Boosting</span></div>
       </a>
 
-      <!-- FACE RECOGNITION -->
-      <a href="https://github.com/Narcisse-sudo/Reconnaissance-faciale" target="_blank" class="project-card">
-        <div class="project-thumb">
-          <svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <rect width="340" height="190" fill="#0a1628"/>
-            <!-- webcam frame -->
-            <rect x="18" y="12" width="162" height="162" rx="4" fill="#050d1a" stroke="#1a3050" stroke-width="1"/>
-            <rect x="18" y="12" width="162" height="20" rx="4" fill="#0f1f38"/>
-            <rect x="18" y="22" width="162" height="10" fill="#0f1f38"/>
-            <circle cx="32" cy="22" r="5" fill="#ff4b6e" opacity="0.8"/>
-            <circle cx="48" cy="22" r="5" fill="#f5a623" opacity="0.8"/>
-            <circle cx="64" cy="22" r="5" fill="#4ade80" opacity="0.8"/>
-            <text x="99" y="26" font-family="monospace" font-size="7" fill="#6b8caf" text-anchor="middle">webcam_feed.py</text>
-            <!-- face ellipse -->
-            <ellipse cx="99" cy="100" rx="44" ry="54" fill="none" stroke="#00e5cc" stroke-width="1.5" opacity="0.7"/>
-            <!-- bounding box -->
-            <rect x="55" y="46" width="88" height="108" rx="2" fill="none" stroke="#00e5cc" stroke-width="1.5"/>
-            <!-- corner marks -->
-            <path d="M55,58 L55,46 L67,46" fill="none" stroke="#00e5cc" stroke-width="2.5"/>
-            <path d="M131,46 L143,46 L143,58" fill="none" stroke="#00e5cc" stroke-width="2.5"/>
-            <path d="M55,142 L55,154 L67,154" fill="none" stroke="#00e5cc" stroke-width="2.5"/>
-            <path d="M131,154 L143,154 L143,142" fill="none" stroke="#00e5cc" stroke-width="2.5"/>
-            <!-- landmarks -->
-            <circle cx="82" cy="86" r="3.5" fill="none" stroke="#f5a623" stroke-width="1.2"/>
-            <circle cx="116" cy="86" r="3.5" fill="none" stroke="#f5a623" stroke-width="1.2"/>
-            <circle cx="99" cy="104" r="2.5" fill="#f5a623" opacity="0.8"/>
-            <path d="M83,120 Q99,132 115,120" fill="none" stroke="#f5a623" stroke-width="1.5"/>
-            <!-- label bar -->
-            <rect x="18" y="158" width="162" height="16" fill="rgba(0,229,204,0.15)"/>
-            <text x="99" y="170" font-family="monospace" font-size="8.5" fill="#00e5cc" text-anchor="middle">NARCISSE — 97.3%</text>
-            <!-- CNN arch right -->
-            <text x="198" y="20" font-family="monospace" font-size="8" fill="#6b8caf">Architecture CNN</text>
-            <g>
-              <rect x="192" y="26" width="32" height="130" rx="2" fill="#0099ff" opacity="0.2" stroke="#0099ff" stroke-width="0.6"/>
-              <text x="208" y="100" font-family="monospace" font-size="6.5" fill="#0099ff" text-anchor="middle" transform="rotate(-90,208,91)">Conv2D 32</text>
-              <rect x="232" y="36" width="26" height="110" rx="2" fill="#0099ff" opacity="0.3" stroke="#0099ff" stroke-width="0.6"/>
-              <text x="245" y="100" font-family="monospace" font-size="6.5" fill="#0099ff" text-anchor="middle" transform="rotate(-90,245,91)">Conv2D 64</text>
-              <rect x="266" y="50" width="20" height="82" rx="2" fill="#00e5cc" opacity="0.3" stroke="#00e5cc" stroke-width="0.6"/>
-              <text x="276" y="96" font-family="monospace" font-size="6.5" fill="#00e5cc" text-anchor="middle" transform="rotate(-90,276,91)">Flatten</text>
-              <rect x="294" y="62" width="16" height="58" rx="2" fill="#00e5cc" opacity="0.5" stroke="#00e5cc" stroke-width="0.6"/>
-              <text x="302" y="96" font-family="monospace" font-size="6.5" fill="#00e5cc" text-anchor="middle" transform="rotate(-90,302,91)">Dense</text>
-              <rect x="318" y="76" width="12" height="30" rx="2" fill="#4ade80" opacity="0.7" stroke="#4ade80" stroke-width="0.6"/>
-              <text x="324" y="96" font-family="monospace" font-size="6.5" fill="#4ade80" text-anchor="middle" transform="rotate(-90,324,91)">Out</text>
-              <line x1="224" y1="91" x2="232" y2="91" stroke="#6b8caf" stroke-width="1"/>
-              <line x1="258" y1="91" x2="266" y2="91" stroke="#6b8caf" stroke-width="1"/>
-              <line x1="286" y1="91" x2="294" y2="91" stroke="#6b8caf" stroke-width="1"/>
-              <line x1="310" y1="91" x2="318" y2="91" stroke="#6b8caf" stroke-width="1"/>
-            </g>
-            <text x="198" y="175" font-family="monospace" font-size="7.5" fill="#4ade80">Accuracy: 97.3%</text>
-          </svg>
-          <div class="project-thumb-overlay"></div>
-        </div>
-        <div class="project-body">
-          <div class="project-top">
-            <div class="project-title">Système de Reconnaissance Faciale</div>
-            <span class="project-arrow">↗</span>
-          </div>
-          <div class="project-desc">
-            Système de <strong>pointage automatique</strong> en temps réel via webcam. Détection des visages avec OpenCV (Haar Cascades), identification par un <strong>CNN entraîné sur mesure</strong> avec Keras. Collecte et <strong>augmentation du dataset</strong> (rotation, zoom, flip), entraînement multi-identités, localisation des 68 points clés du visage (landmarks). Déployé en application temps réel avec une précision d'identification de 97.3%.
-          </div>
-          <div class="project-tags">
-            <span class="tag">CNN</span><span class="tag">OpenCV</span><span class="tag">Keras</span><span class="tag">Data Augmentation</span><span class="tag lang">Python</span>
-          </div>
-        </div>
+      <a class="card" href="https://github.com/Narcisse-sudo/Reconnaissance-faciale" target="_blank" rel="noopener">
+        <div class="card-top"><h3>Pointage par reconnaissance faciale</h3><span class="card-go">↗</span></div>
+        <p class="card-desc">Détection de visages en temps réel via webcam (OpenCV) et identification par un
+        <strong>CNN entraîné sur un jeu de données constitué à la main</strong>, avec augmentation
+        (rotation, zoom, symétrie) et entraînement multi-identités.</p>
+        <div class="tags"><span class="tag tag-key">CNN</span><span class="tag">OpenCV</span><span class="tag">Keras</span><span class="tag">Vision</span></div>
       </a>
 
-      <!-- BINARY TREE C++ -->
-      <a href="https://github.com/Narcisse-sudo/Binary-Tree-C-" target="_blank" class="project-card">
-        <div class="project-thumb">
-          <svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <rect width="340" height="190" fill="#0a1628"/>
-            <!-- tree visualization -->
-            <text x="20" y="16" font-family="monospace" font-size="8.5" fill="#6b8caf">Arbre de décision — CART</text>
-            <!-- root node -->
-            <rect x="130" y="22" width="80" height="28" rx="3" fill="rgba(0,229,204,0.12)" stroke="#00e5cc" stroke-width="1.2"/>
-            <text x="170" y="34" font-family="monospace" font-size="7.5" fill="#00e5cc" text-anchor="middle">Age ≤ 35</text>
-            <text x="170" y="44" font-family="monospace" font-size="6.5" fill="#6b8caf" text-anchor="middle">Gini: 0.38</text>
-            <!-- level 2 lines -->
-            <line x1="148" y1="50" x2="95" y2="78" stroke="#1a3050" stroke-width="1.2"/>
-            <line x1="192" y1="50" x2="244" y2="78" stroke="#1a3050" stroke-width="1.2"/>
-            <text x="115" y="70" font-family="monospace" font-size="7" fill="#4ade80">Oui</text>
-            <text x="218" y="70" font-family="monospace" font-size="7" fill="#ff4b6e">Non</text>
-            <!-- level 2 nodes -->
-            <rect x="54" y="78" width="82" height="28" rx="3" fill="rgba(0,153,255,0.12)" stroke="#0099ff" stroke-width="1.2"/>
-            <text x="95" y="90" font-family="monospace" font-size="7.5" fill="#0099ff" text-anchor="middle">Salaire ≤ 50k</text>
-            <text x="95" y="100" font-family="monospace" font-size="6.5" fill="#6b8caf" text-anchor="middle">Gini: 0.29</text>
-            <rect x="202" y="78" width="82" height="28" rx="3" fill="rgba(0,153,255,0.12)" stroke="#0099ff" stroke-width="1.2"/>
-            <text x="243" y="90" font-family="monospace" font-size="7.5" fill="#0099ff" text-anchor="middle">Exp ≤ 5 ans</text>
-            <text x="243" y="100" font-family="monospace" font-size="6.5" fill="#6b8caf" text-anchor="middle">Gini: 0.34</text>
-            <!-- level 3 lines -->
-            <line x1="74" y1="106" x2="40" y2="132" stroke="#1a3050" stroke-width="1"/>
-            <line x1="116" y1="106" x2="150" y2="132" stroke="#1a3050" stroke-width="1"/>
-            <line x1="222" y1="106" x2="188" y2="132" stroke="#1a3050" stroke-width="1"/>
-            <line x1="262" y1="106" x2="296" y2="132" stroke="#1a3050" stroke-width="1"/>
-            <!-- leaves -->
-            <rect x="16" y="132" width="48" height="24" rx="3" fill="rgba(74,222,128,0.18)" stroke="#4ade80" stroke-width="1"/>
-            <text x="40" y="144" font-family="monospace" font-size="7" fill="#4ade80" text-anchor="middle">Oui 0.92</text>
-            <rect x="128" y="132" width="48" height="24" rx="3" fill="rgba(255,75,110,0.15)" stroke="#ff4b6e" stroke-width="1"/>
-            <text x="152" y="144" font-family="monospace" font-size="7" fill="#ff4b6e" text-anchor="middle">Non 0.78</text>
-            <rect x="164" y="132" width="48" height="24" rx="3" fill="rgba(74,222,128,0.18)" stroke="#4ade80" stroke-width="1"/>
-            <text x="188" y="144" font-family="monospace" font-size="7" fill="#4ade80" text-anchor="middle">Oui 0.85</text>
-            <rect x="272" y="132" width="52" height="24" rx="3" fill="rgba(255,75,110,0.15)" stroke="#ff4b6e" stroke-width="1"/>
-            <text x="298" y="144" font-family="monospace" font-size="7" fill="#ff4b6e" text-anchor="middle">Non 0.71</text>
-            <!-- bagging note -->
-            <rect x="16" y="168" width="308" height="16" rx="2" fill="rgba(245,166,35,0.08)" stroke="rgba(245,166,35,0.25)" stroke-width="0.8"/>
-            <text x="170" y="179" font-family="monospace" font-size="7.5" fill="#f5a623" text-anchor="middle">Bagging: 100 arbres · Bootstrap sampling · Variance réduite de 38%</text>
-          </svg>
-          <div class="project-thumb-overlay"></div>
-        </div>
-        <div class="project-body">
-          <div class="project-top">
-            <div class="project-title">Arbres de Décision en C++</div>
-            <span class="project-arrow">↗</span>
-          </div>
-          <div class="project-desc">
-            Implémentation <strong>from scratch</strong> en C++ de l'algorithme d'arbre de décision CART avec critère de <strong>Gini et entropie</strong>. Construction récursive de l'arbre, gestion de l'élagage (pruning) pour limiter le surapprentissage, et sélection automatique du meilleur seuil de split. Ajout d'une méthode de <strong>Bagging</strong> (100 arbres, bootstrap sampling) qui réduit la variance de 38% par rapport à un arbre unique.
-          </div>
-          <div class="project-tags">
-            <span class="tag">CART</span><span class="tag">Bagging</span><span class="tag">Gini / Entropie</span><span class="tag">From Scratch</span><span class="tag lang">C++</span>
-          </div>
-        </div>
+      <a class="card" href="https://github.com/Narcisse-sudo/Neural_Network" target="_blank" rel="noopener">
+        <div class="card-top"><h3>Réseau de neurones — from scratch</h3><span class="card-go">↗</span></div>
+        <p class="card-desc">Réseau multicouche codé sans librairie de haut niveau : propagation avant,
+        fonctions de perte, <strong>rétropropagation</strong>, optimiseurs SGD et Adam. Étude comparative
+        des fonctions d'activation et de la régularisation L1/L2.</p>
+        <div class="tags"><span class="tag tag-key">Backpropagation</span><span class="tag">NumPy</span><span class="tag">Optimisation</span></div>
       </a>
 
-      <!-- NEURAL NETWORK -->
-      <a href="https://github.com/Narcisse-sudo/Neural_Network" target="_blank" class="project-card">
-        <div class="project-thumb">
-          <svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <rect width="340" height="190" fill="#0a1628"/>
-            <!-- Neural net -->
-            <text x="20" y="16" font-family="monospace" font-size="8.5" fill="#6b8caf">Réseau Multicouches + Backpropagation</text>
-            <g font-family="monospace" font-size="7" fill="#6b8caf">
-              <text x="45" y="30" text-anchor="middle">Input</text>
-              <text x="110" y="30" text-anchor="middle">Hidden 1</text>
-              <text x="185" y="30" text-anchor="middle">Hidden 2</text>
-              <text x="255" y="30" text-anchor="middle">Output</text>
-            </g>
-            <!-- input nodes -->
-            <circle cx="45" cy="55" r="11" fill="#0a1628" stroke="#0099ff" stroke-width="1.5"/>
-            <circle cx="45" cy="90" r="11" fill="#0a1628" stroke="#0099ff" stroke-width="1.5"/>
-            <circle cx="45" cy="125" r="11" fill="#0a1628" stroke="#0099ff" stroke-width="1.5"/>
-            <circle cx="45" cy="160" r="11" fill="#0a1628" stroke="#0099ff" stroke-width="1.5"/>
-            <!-- h1 nodes -->
-            <circle cx="115" cy="45" r="11" fill="#0a1628" stroke="#00e5cc" stroke-width="1.5"/>
-            <circle cx="115" cy="80" r="11" fill="#0a1628" stroke="#00e5cc" stroke-width="1.5"/>
-            <circle cx="115" cy="115" r="11" fill="#0a1628" stroke="#00e5cc" stroke-width="1.5"/>
-            <circle cx="115" cy="150" r="11" fill="#0a1628" stroke="#00e5cc" stroke-width="1.5"/>
-            <circle cx="115" cy="175" r="11" fill="#0a1628" stroke="#00e5cc" stroke-width="1.5"/>
-            <!-- h2 nodes -->
-            <circle cx="185" cy="62" r="11" fill="#0a1628" stroke="#00e5cc" stroke-width="1.5"/>
-            <circle cx="185" cy="100" r="11" fill="#0a1628" stroke="#00e5cc" stroke-width="1.5"/>
-            <circle cx="185" cy="138" r="11" fill="#0a1628" stroke="#00e5cc" stroke-width="1.5"/>
-            <circle cx="185" cy="170" r="11" fill="#0a1628" stroke="#00e5cc" stroke-width="1.5"/>
-            <!-- output -->
-            <circle cx="255" cy="90" r="13" fill="rgba(0,229,204,0.12)" stroke="#00e5cc" stroke-width="2"/>
-            <circle cx="255" cy="130" r="13" fill="rgba(255,75,110,0.1)" stroke="#ff4b6e" stroke-width="2"/>
-            <!-- connections in-h1 -->
-            <g stroke="#0099ff" stroke-width="0.4" opacity="0.25">
-              <line x1="56" y1="55" x2="104" y2="45"/><line x1="56" y1="55" x2="104" y2="80"/>
-              <line x1="56" y1="55" x2="104" y2="115"/><line x1="56" y1="55" x2="104" y2="150"/>
-              <line x1="56" y1="90" x2="104" y2="45"/><line x1="56" y1="90" x2="104" y2="80"/>
-              <line x1="56" y1="90" x2="104" y2="115"/><line x1="56" y1="90" x2="104" y2="175"/>
-              <line x1="56" y1="125" x2="104" y2="80"/><line x1="56" y1="125" x2="104" y2="115"/>
-              <line x1="56" y1="125" x2="104" y2="150"/><line x1="56" y1="125" x2="104" y2="175"/>
-              <line x1="56" y1="160" x2="104" y2="115"/><line x1="56" y1="160" x2="104" y2="150"/>
-              <line x1="56" y1="160" x2="104" y2="175"/>
-            </g>
-            <!-- connections h1-h2 -->
-            <g stroke="#00e5cc" stroke-width="0.4" opacity="0.25">
-              <line x1="126" y1="45" x2="174" y2="62"/><line x1="126" y1="45" x2="174" y2="100"/>
-              <line x1="126" y1="80" x2="174" y2="62"/><line x1="126" y1="80" x2="174" y2="100"/>
-              <line x1="126" y1="80" x2="174" y2="138"/>
-              <line x1="126" y1="115" x2="174" y2="62"/><line x1="126" y1="115" x2="174" y2="100"/>
-              <line x1="126" y1="115" x2="174" y2="138"/><line x1="126" y1="115" x2="174" y2="170"/>
-              <line x1="126" y1="150" x2="174" y2="100"/><line x1="126" y1="150" x2="174" y2="138"/>
-              <line x1="126" y1="150" x2="174" y2="170"/>
-              <line x1="126" y1="175" x2="174" y2="138"/><line x1="126" y1="175" x2="174" y2="170"/>
-            </g>
-            <!-- connections h2-out -->
-            <g stroke="#00e5cc" stroke-width="0.7" opacity="0.5">
-              <line x1="196" y1="62" x2="242" y2="90"/><line x1="196" y1="100" x2="242" y2="90"/>
-              <line x1="196" y1="100" x2="242" y2="130"/><line x1="196" y1="138" x2="242" y2="90"/>
-              <line x1="196" y1="138" x2="242" y2="130"/><line x1="196" y1="170" x2="242" y2="130"/>
-            </g>
-            <!-- loss curve -->
-            <rect x="283" y="35" width="48" height="140" rx="2" fill="#0f1f38" stroke="#1a3050" stroke-width="0.8"/>
-            <text x="307" y="48" font-family="monospace" font-size="6.5" fill="#6b8caf" text-anchor="middle">Loss</text>
-            <polyline points="290,160 295,148 300,138 305,125 310,112 315,100 320,92 325,88 322,85" fill="none" stroke="#f5a623" stroke-width="1.8" opacity="0.9"/>
-            <text x="307" y="170" font-family="monospace" font-size="6" fill="#f5a623" text-anchor="middle">Adam ↓</text>
-          </svg>
-          <div class="project-thumb-overlay"></div>
-        </div>
-        <div class="project-body">
-          <div class="project-top">
-            <div class="project-title">Réseau de Neurones — From Scratch</div>
-            <span class="project-arrow">↗</span>
-          </div>
-          <div class="project-desc">
-            Implémentation <strong>from scratch</strong> d'un réseau de neurones multicouches sans librairie haut niveau. Codage complet de la propagation avant, du calcul de la perte (Cross-Entropy, MSE), de la <strong>rétropropagation</strong> et des optimiseurs SGD et Adam. Étude comparative des <strong>fonctions d'activation</strong> (ReLU, Sigmoid, Tanh), de la régularisation L1/L2 et du batch normalization. Visualisation de la courbe de perte epoch par epoch.
-          </div>
-          <div class="project-tags">
-            <span class="tag">Backpropagation</span><span class="tag">Adam / SGD</span><span class="tag">Régularisation L1/L2</span><span class="tag">From Scratch</span><span class="tag lang">Jupyter</span>
-          </div>
-        </div>
+      <a class="card" href="https://github.com/Narcisse-sudo/Binary-Tree-C-" target="_blank" rel="noopener">
+        <div class="card-top"><h3>Arbres de décision en C++</h3><span class="card-go">↗</span></div>
+        <p class="card-desc">Implémentation de l'algorithme CART en C++ : critères de Gini et d'entropie,
+        construction récursive, élagage et recherche du meilleur seuil de séparation. Extension au
+        <strong>bagging</strong> par échantillonnage bootstrap.</p>
+        <div class="tags"><span class="tag tag-key">C++</span><span class="tag">CART</span><span class="tag">Bagging</span></div>
       </a>
 
-      <!-- PYTHON CHALLENGE -->
-      <a href="https://github.com/Narcisse-sudo/Python-Challenge-Data-Scientist" target="_blank" class="project-card">
-        <div class="project-thumb">
-          <svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <rect width="340" height="190" fill="#0a1628"/>
-            <!-- terminal -->
-            <rect x="18" y="12" width="200" height="165" rx="5" fill="#050d1a" stroke="#1a3050" stroke-width="1"/>
-            <rect x="18" y="12" width="200" height="22" rx="5" fill="#0f1f38"/>
-            <rect x="18" y="24" width="200" height="10" fill="#0f1f38"/>
-            <circle cx="32" cy="23" r="5" fill="#ff4b6e" opacity="0.8"/>
-            <circle cx="48" cy="23" r="5" fill="#f5a623" opacity="0.8"/>
-            <circle cx="64" cy="23" r="5" fill="#4ade80" opacity="0.8"/>
-            <text x="118" y="27" font-family="monospace" font-size="7.5" fill="#6b8caf" text-anchor="middle">challenge_ds.py</text>
-            <g font-family="monospace" font-size="8.5">
-              <text x="28" y="56" fill="#0099ff">import</text><text x="76" y="56" fill="#e8f4ff"> pandas as pd</text>
-              <text x="28" y="71" fill="#0099ff">import</text><text x="76" y="71" fill="#e8f4ff"> numpy as np</text>
-              <text x="28" y="86" fill="#0099ff">from</text><text x="57" y="86" fill="#e8f4ff"> sklearn.ensemble</text>
-              <text x="28" y="101" fill="#4ade80">def</text><text x="50" y="101" fill="#f5a623"> preprocess</text><text x="121" y="101" fill="#e8f4ff">(df):</text>
-              <text x="36" y="116" fill="#6b8caf">  # Nettoyage + encoding</text>
-              <text x="36" y="131" fill="#e8f4ff">  df.fillna(</text><text x="100" y="131" fill="#f5a623">strategy</text><text x="141" y="131" fill="#e8f4ff">)</text>
-              <text x="36" y="146" fill="#0099ff">  return</text><text x="80" y="146" fill="#e8f4ff"> df_clean</text>
-              <text x="28" y="161" fill="#00e5cc">► Accuracy: 94.2%  ✓</text>
-            </g>
-            <rect x="26" y="163" width="6" height="10" rx="1" fill="#00e5cc" opacity="0.9"/>
-            <!-- progress panel right -->
-            <rect x="232" y="18" width="94" height="160" rx="3" fill="#0f1f38" stroke="#1a3050" stroke-width="0.8"/>
-            <text x="279" y="34" font-family="monospace" font-size="7.5" fill="#6b8caf" text-anchor="middle">Progression</text>
-            <g font-family="monospace" font-size="7" fill="#6b8caf">
-              <text x="240" y="52">Bases Python</text>
-              <rect x="240" y="56" width="76" height="5" rx="1" fill="#1a3050"/>
-              <rect x="240" y="56" width="76" height="5" rx="1" fill="#4ade80" opacity="0.8"/>
-              <text x="240" y="76">Pandas/NumPy</text>
-              <rect x="240" y="80" width="76" height="5" rx="1" fill="#1a3050"/>
-              <rect x="240" y="80" width="70" height="5" rx="1" fill="#4ade80" opacity="0.8"/>
-              <text x="240" y="100">Visualisation</text>
-              <rect x="240" y="104" width="76" height="5" rx="1" fill="#1a3050"/>
-              <rect x="240" y="104" width="62" height="5" rx="1" fill="#00e5cc" opacity="0.8"/>
-              <text x="240" y="124">ML Sklearn</text>
-              <rect x="240" y="128" width="76" height="5" rx="1" fill="#1a3050"/>
-              <rect x="240" y="128" width="56" height="5" rx="1" fill="#00e5cc" opacity="0.75"/>
-              <text x="240" y="148">Deep Learning</text>
-              <rect x="240" y="152" width="76" height="5" rx="1" fill="#1a3050"/>
-              <rect x="240" y="152" width="38" height="5" rx="1" fill="#f5a623" opacity="0.8"/>
-              <text x="240" y="168">Stats / Proba</text>
-              <rect x="240" y="172" width="76" height="5" rx="1" fill="#1a3050"/>
-              <rect x="240" y="172" width="60" height="5" rx="1" fill="#0099ff" opacity="0.7"/>
-            </g>
-          </svg>
-          <div class="project-thumb-overlay"></div>
-        </div>
-        <div class="project-body">
-          <div class="project-top">
-            <div class="project-title">Python Challenge — Data Scientist</div>
-            <span class="project-arrow">↗</span>
-          </div>
-          <div class="project-desc">
-            Parcours structuré et documenté d'apprentissage de Python appliqué à la Data Science, <strong>de zéro aux techniques avancées</strong>. Exercices progressifs couvrant les fondamentaux Python (structures, POO, algorithmes), manipulation de données avec <strong>Pandas et NumPy</strong>, visualisation (Matplotlib, Seaborn), pipeline ML complet avec Scikit-learn et introduction au Deep Learning. Chaque module inclut des mini-projets évalués avec métriques de performance.
-          </div>
-          <div class="project-tags">
-            <span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">Scikit-learn</span><span class="tag">Matplotlib</span><span class="tag">POO</span><span class="tag lang">Python</span>
-          </div>
-        </div>
+      <a class="card" href="https://github.com/Narcisse-sudo/Python-Challenge-Data-Scientist" target="_blank" rel="noopener">
+        <div class="card-top"><h3>Python challenge — data scientist</h3><span class="card-go">↗</span></div>
+        <p class="card-desc">Parcours d'exercices progressifs couvrant les fondamentaux Python,
+        la manipulation de données avec <strong>pandas et NumPy</strong>, la visualisation et un
+        pipeline de machine learning complet sous scikit-learn.</p>
+        <div class="tags"><span class="tag">pandas</span><span class="tag">NumPy</span><span class="tag">Scikit-learn</span><span class="tag">Matplotlib</span></div>
       </a>
 
     </div>
   </div>
 </section>
 
-<!-- SKILLS -->
-<section id="skills" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <div class="container">
-    <div class="section-header"><span class="section-num">02 /</span><h2>Compétences</h2></div>
-    <div class="skills-layout">
+<section id="competences">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Compétences</p>
+      <h2>Outils et méthodes</h2>
+      <p class="lede">Les technologies que j'utilise réellement dans mes projets et mes stages,
+      regroupées par usage.</p>
+    </div>
+
+    <div class="skills rv">
       <div>
-        <div class="skills-group-title">— Maîtrise technique</div>
-        <div id="skill-bars">
-          <div class="skill-bar-row"><span class="skill-name">Python / ML</span><div class="skill-track"><div class="skill-fill" data-w="90"></div></div><span class="skill-pct">90%</span></div>
-          <div class="skill-bar-row"><span class="skill-name">Deep Learning</span><div class="skill-track"><div class="skill-fill" data-w="82"></div></div><span class="skill-pct">82%</span></div>
-          <div class="skill-bar-row"><span class="skill-name">NLP</span><div class="skill-track"><div class="skill-fill" data-w="78"></div></div><span class="skill-pct">78%</span></div>
-          <div class="skill-bar-row"><span class="skill-name">SQL</span><div class="skill-track"><div class="skill-fill" data-w="75"></div></div><span class="skill-pct">75%</span></div>
-          <div class="skill-bar-row"><span class="skill-name">Data Viz / BI</span><div class="skill-track"><div class="skill-fill" data-w="80"></div></div><span class="skill-pct">80%</span></div>
-          <div class="skill-bar-row"><span class="skill-name">Docker / API</span><div class="skill-track"><div class="skill-fill" data-w="70"></div></div><span class="skill-pct">70%</span></div>
-          <div class="skill-bar-row"><span class="skill-name">Cloud AWS</span><div class="skill-track"><div class="skill-fill" data-w="50"></div></div><span class="skill-pct">50%</span></div>
-        </div>
+        <p class="skill-h">Langages</p>
+        <ul class="skill-list">
+          <li><b>Python</b> — niveau avancé</li>
+          <li><b>SQL</b> — requêtes, jointures, agrégats</li>
+          <li><b>R</b> — analyse statistique</li>
+          <li><b>SAS</b> — traitement de données</li>
+          <li><b>C++</b> — algorithmique</li>
+        </ul>
       </div>
       <div>
-        <div class="skills-group-title">— Outils & technologies</div>
-        <div class="tools-cloud">
-          <span class="tool-pill">PyTorch</span><span class="tool-pill">Keras</span><span class="tool-pill">Scikit-learn</span><span class="tool-pill">Pandas</span><span class="tool-pill">NumPy</span><span class="tool-pill">Matplotlib</span><span class="tool-pill">Power BI</span><span class="tool-pill">FastAPI</span><span class="tool-pill">Streamlit</span><span class="tool-pill">Docker</span><span class="tool-pill">Git</span><span class="tool-pill">Linux</span><span class="tool-pill">VS Code</span><span class="tool-pill">R</span><span class="tool-pill">SAS</span><span class="tool-pill">AWS S3</span><span class="tool-pill">SageMaker</span><span class="tool-pill">Dataiku</span><span class="tool-pill">Power Query</span><span class="tool-pill">C++</span>
-        </div>
-        <div style="margin-top:2.5rem;">
-          <div class="skills-group-title">— Domaines ML</div>
-          <div class="tools-cloud">
-            <span class="tool-pill" style="border-color:rgba(0,229,204,0.4);color:var(--teal)">Classification</span>
-            <span class="tool-pill" style="border-color:rgba(0,229,204,0.4);color:var(--teal)">Clustering</span>
-            <span class="tool-pill" style="border-color:rgba(0,229,204,0.4);color:var(--teal)">NLP</span>
-            <span class="tool-pill" style="border-color:rgba(0,229,204,0.4);color:var(--teal)">Computer Vision</span>
-            <span class="tool-pill" style="border-color:rgba(0,229,204,0.4);color:var(--teal)">Transformer</span>
-            <span class="tool-pill" style="border-color:rgba(0,229,204,0.4);color:var(--teal)">Prédiction</span>
-            <span class="tool-pill" style="border-color:rgba(0,229,204,0.4);color:var(--teal)">RL (en cours)</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- EXPERIENCE -->
-<section id="experience">
-  <div class="container">
-    <div class="section-header"><span class="section-num">03 /</span><h2>Parcours</h2></div>
-    <div class="inner-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;">
-      <div>
-        <div class="skills-group-title" style="margin-bottom:2rem;">— Expériences</div>
-        <div class="timeline">
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-date">Mars 2026 – Aujourd'hui</div>
-            <div class="timeline-title">Stagiaire Deep Learning — Analyse d'images 4D</div>
-            <div class="timeline-place">INRAE · UMR FARE · Reims, France</div>
-            <div class="timeline-desc">Développement de modèles CNN pour la segmentation et le suivi cellulaire sur des images de microscopie confocale 4D. Implémentation d'une architecture 3D U-Net sous PyTorch pour l'analyse volumique et temporelle. Conception d'un pipeline Deep Learning 4D, prétraitement des données et optimisation via métriques de segmentation.</div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-date">Juin – Août 2024</div>
-            <div class="timeline-title">Stagiaire Data Science</div>
-            <div class="timeline-place">RightCom · Bénin</div>
-            <div class="timeline-desc">Analyse comportementale clients, modèles de scoring et segmentation, interprétation des résultats pour la prise de décision data-driven.</div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-date">2023 – 2024</div>
-            <div class="timeline-title">Enseignant Mathématiques</div>
-            <div class="timeline-place">Complexe Franco-Arabe de Zongo · Cotonou</div>
-            <div class="timeline-desc">93% de réussite aux examens nationaux. Enseignement rigoureux, gestion de classe et préparation aux examens nationaux.</div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-date">Depuis mai 2025</div>
-            <div class="timeline-title">Animateur scientifique</div>
-            <div class="timeline-place">Les Petits Débrouillards · Dijon</div>
-            <div class="timeline-desc">Animation d'ateliers ludiques pour initier les jeunes aux sciences et à la technologie.</div>
-          </div>
-        </div>
+        <p class="skill-h">Machine learning</p>
+        <ul class="skill-list">
+          <li>Classification, régression, clustering</li>
+          <li>Scikit-learn, XGBoost</li>
+          <li>PyTorch, Keras</li>
+          <li>NLP, Transformers, CNN, RNN</li>
+          <li>Détection d'anomalies et de fraude</li>
+          <li>Interprétabilité et importance des variables</li>
+        </ul>
       </div>
       <div>
-        <div class="skills-group-title" style="margin-bottom:2rem;">— Formations</div>
-        <div class="timeline">
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-date">2026 – 2027</div>
-            <div class="timeline-title">Master 1 Data Scientist & IA</div>
-            <div class="timeline-place">Coda School</div>
-            <div class="timeline-desc">ML, Deep Learning, IA générative, Cloud AWS, apprentissage par renforcement, gestion de projet data.</div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-date">2025 – 2026</div>
-            <div class="timeline-title">Master 2 Mathématiques</div>
-            <div class="timeline-place">Université de Bourgogne · Dijon</div>
-            <div class="timeline-desc">Ingénierie, Algorithmiques et Statistiques. Bases mathématiques solides pour le ML et la recherche appliquée.</div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-date">2023</div>
-            <div class="timeline-title">Licence Mathématiques Fondamentales</div>
-            <div class="timeline-place">Université d'Abomey-Calavi · Bénin</div>
-            <div class="timeline-desc">Analyse, algèbre linéaire, probabilités et statistiques mathématiques.</div>
-          </div>
-        </div>
+        <p class="skill-h">Données et restitution</p>
+        <ul class="skill-list">
+          <li>pandas, NumPy</li>
+          <li>Matplotlib, Seaborn</li>
+          <li>Power BI, Excel</li>
+          <li>Analyse exploratoire et qualité de la donnée</li>
+        </ul>
+      </div>
+      <div>
+        <p class="skill-h">Mise en production</p>
+        <ul class="skill-list">
+          <li>FastAPI, Streamlit</li>
+          <li>Docker, Docker Compose</li>
+          <li>Git, GitLab, Linux</li>
+          <li>Calcul haute performance (Roméo)</li>
+        </ul>
+      </div>
+      <div>
+        <p class="skill-h">Mathématiques</p>
+        <ul class="skill-list">
+          <li>Probabilités et statistique inférentielle</li>
+          <li>Optimisation</li>
+          <li>Algèbre linéaire et analyse</li>
+        </ul>
+      </div>
+      <div>
+        <p class="skill-h">Langues</p>
+        <ul class="skill-list">
+          <li><b>Français</b> — langue maternelle</li>
+          <li><b>Anglais</b> — niveau B1</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="container">
-    <div class="contact-grid">
-      <div class="contact-left">
-        <div class="availability">Disponible — alternance sept. 2026</div>
-        <div class="section-header" style="margin-bottom:1rem;"><span class="section-num">04 /</span><h2>Contact</h2></div>
-        <p>Étudiant ambitieux et curieux, je cherche une alternance stimulante en Data Science / IA pour septembre 2026. N'hésitez pas à me contacter !</p>
-        <a href="mailto:dalkonarcisse19@gmail.com" class="btn btn-primary">Envoyer un email →</a>
-      </div>
-      <div class="contact-links">
-        <a href="mailto:dalkonarcisse19@gmail.com" class="contact-link"><span class="contact-icon">📧</span>dalkonarcisse19@gmail.com</a>
-        <a href="tel:+33784825089" class="contact-link"><span class="contact-icon">📱</span>07 84 82 50 89</a>
-        <a href="https://www.linkedin.com/in/narcisse-dalko" target="_blank" class="contact-link"><span class="contact-icon">💼</span>linkedin.com/in/narcisse-dalko</a>
-        <a href="https://github.com/Narcisse-sudo" target="_blank" class="contact-link"><span class="contact-icon">🐙</span>github.com/Narcisse-sudo</a>
-        <div class="contact-link" style="cursor:default;"><span class="contact-icon">📍</span>Dijon, 21000 · Mobilité possible</div>
+<section id="contact" class="band">
+  <div class="wrap contact-grid">
+    <div class="rv">
+      <p class="eyebrow">Contact</p>
+      <h2>Parlons données</h2>
+      <p class="lede" style="margin-top:1rem;">
+        Une question sur un projet, une collaboration ou simplement l'envie d'échanger
+        sur la data science appliquée à l'assurance et à la santé : ma boîte mail est ouverte.
+      </p>
+      <div class="actions">
+        <a class="btn btn-solid" href="mailto:dalkonarcisse19@gmail.com">Envoyer un message</a>
       </div>
     </div>
+
+    <ul class="clist rv">
+      <li><a href="mailto:dalkonarcisse19@gmail.com"><em>Email</em><b>dalkonarcisse19@gmail.com</b></a></li>
+      <li><a href="tel:+33784825089"><em>Téléphone</em><b>07 84 82 50 89</b></a></li>
+      <li><a href="https://www.linkedin.com/in/narcisse-dalko" target="_blank" rel="noopener"><em>LinkedIn</em><b>narcisse-dalko ↗</b></a></li>
+      <li><a href="https://github.com/Narcisse-sudo" target="_blank" rel="noopener"><em>GitHub</em><b>Narcisse-sudo ↗</b></a></li>
+      <li><span><em>Localisation</em><b>Reims · mobilité Île-de-France</b></span></li>
+    </ul>
   </div>
 </section>
 
-<footer>Narcisse DALKO — <span>Data Scientist</span> · 2026</footer>
+<footer>
+  <div class="wrap foot-in">
+    <span>Narcisse Dalko — Data scientist</span>
+    <span>Reims · 2026</span>
+  </div>
+</footer>
 
 <script>
-const canvas = document.getElementById('canvas-bg');
-const ctx = canvas.getContext('2d');
-let W, H, particles = [];
-function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
-function initParticles(){particles=[];const n=Math.floor((W*H)/14000);for(let i=0;i<n;i++)particles.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5});}
-function drawGrid(){ctx.strokeStyle='rgba(26,48,80,0.5)';ctx.lineWidth=.5;for(let x=0;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}for(let y=0;y<H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}}
-function animate(){ctx.clearRect(0,0,W,H);drawGrid();for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.strokeStyle=`rgba(0,229,204,${.12*(1-d/120)})`;ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.stroke();}}particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(0,229,204,0.5)';ctx.fill();});requestAnimationFrame(animate);}
-resize();initParticles();animate();
-window.addEventListener('resize',()=>{resize();initParticles();});
-const fills=document.querySelectorAll('.skill-fill');
-new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting)fills.forEach(f=>f.style.width=f.dataset.w+'%');});},{threshold:.3}).observe(document.getElementById('skill-bars'));
-document.querySelectorAll('.timeline-item').forEach(item=>{new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('visible');});},{threshold:.2}).observe(item);});
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items = document.querySelectorAll('.rv');
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(function(el){ el.classList.add('on'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function(el){ io.observe(el); });
+})();
 </script>
 </body>
 </html>
